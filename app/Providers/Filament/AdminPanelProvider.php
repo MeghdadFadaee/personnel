@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
             ])
+            ->profile(isSimple: false)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
