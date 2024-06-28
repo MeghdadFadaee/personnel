@@ -1,0 +1,25 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-Dvd1JpyG.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/fonts/ISW/IRANSansWeb.eot": {
+    "file": "assets/IRANSansWeb-DFa-pMnQ.eot",
+    "src": "resources/css/fonts/ISW/IRANSansWeb.eot"
+  },
+  "resources/css/fonts/ISW/IRANSansWeb.svg": {
+    "file": "assets/IRANSansWeb-C322DWWK.svg",
+    "src": "resources/css/fonts/ISW/IRANSansWeb.svg"
+  },
+  "resources/css/fonts/ISW/IRANSansWeb.ttf": {
+    "file": "assets/IRANSansWeb-DEAJesP_.ttf",
+    "src": "resources/css/fonts/ISW/IRANSansWeb.ttf"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C1-XIpUa.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
