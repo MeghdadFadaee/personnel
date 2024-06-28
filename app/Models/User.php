@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-//use Couchbase\Role;
-use Couchbase\Role;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;

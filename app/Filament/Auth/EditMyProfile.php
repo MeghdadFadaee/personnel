@@ -30,11 +30,6 @@ class EditMyProfile extends EditProfile
             ]);
     }
 
-    public function getComponents(): Component
-    {
-        return $this->form;
-    }
-
     public function getPasswordComponent(): Component
     {
         return $this->getPasswordFormComponent();
