@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class LoginByUsername extends Login
 {
-    protected string $loginBy = 'name';
+    protected string $loginBy = 'username';
 
     public function form(Form $form): Form
     {
@@ -25,7 +25,6 @@ class LoginByUsername extends Login
     private function getUsernameFormComponent(): TextInput
     {
         return TextInput::make($this->loginBy)
-            ->translateLabel()
             ->required()
             ->autocomplete()
             ->autofocus()

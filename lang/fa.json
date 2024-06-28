@@ -1139,5 +1139,12 @@
     "Zimbabwe": "زیمباوه",
     "ZIP / Postal Code": "کد پستی",
     "Zip / Postal Code": "کدپستی",
-    "Åland Islands": "جزایر الند"
+    "Åland Islands": "جزایر الند",
+    "First name": "نام",
+    "Last name": "نام خانوادگی",
+    "Username": "نام کاربری",
+    "Mobile": "شماره تلفن",
+    "admin": "ادمین",
+    "user": "کاربر",
+    "users": "کاربران"
 }

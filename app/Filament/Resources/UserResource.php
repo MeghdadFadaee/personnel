@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Auth\EditMyProfile;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\Widgets\UserOverview;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 
 class UserResource extends BaseResource
 {
+
     protected static ?string $model = User::class;
     protected static ?int $navigationSort = 2;
 
@@ -20,12 +21,11 @@ class UserResource extends BaseResource
 
     public static function form(Form $form): Form
     {
+        $editProfile = new EditMyProfile();
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->translateLabel()
+                ...$editProfile->form->getComponents(),
+                $editProfile->getRoleComponent(),
             ]);
     }
 
@@ -33,17 +33,21 @@ class UserResource extends BaseResource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->translateLabel()
-                    ->searchable()
-                    ->sortable()
+                TextColumn::make('full_name'),
+                TextColumn::make('username'),
+                TextColumn::make('mobile'),
+                TextColumn::make('email'),
+                TextColumn::make('role')
+                    ->formatStateUsing(fn(string $state): string => trans($state)),
             ])
             ->filters([
                 //
             ])
+            ->recordUrl(null)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton(),
             ])
             ->bulkActions([
                 //
@@ -68,6 +72,6 @@ class UserResource extends BaseResource
 
     public static function canAccess(): bool
     {
-        return auth()->id() < 2;
+        return auth()->user()->isAdmin();
     }
 }
