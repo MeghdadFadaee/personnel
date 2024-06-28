@@ -18,7 +18,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('user_project', function(Blueprint $table)
+        Schema::create('project_user', function(Blueprint $table)
         {
             $table->integer('user_id');
             $table->integer('project_id');
@@ -31,6 +31,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('projects');
-        Schema::dropIfExists('user_project');
+        Schema::dropIfExists('project_user');
     }
 };

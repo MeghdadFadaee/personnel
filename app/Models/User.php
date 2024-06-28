@@ -5,6 +5,8 @@ namespace App\Models;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable implements FilamentUser, HasName
 {
-    use HasFactory, Notifiable;
+    use HasFactory, SoftDeletes, Notifiable;
 
     public const ROLE_ADMIN = 'admin';
     public const ROLE_USER = 'user';
@@ -54,6 +56,11 @@ class User extends Authenticatable implements FilamentUser, HasName
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class);
     }
 
     public function isAdmin(): bool
