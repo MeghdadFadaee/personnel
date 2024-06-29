@@ -22,7 +22,7 @@ class ProjectResource extends BaseResource
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                TextInput::make('title')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -32,7 +32,8 @@ class ProjectResource extends BaseResource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('title'),
+                TextColumn::make('users.full_name')->badge(),
             ])
             ->recordUrl(null)
             ->actions([

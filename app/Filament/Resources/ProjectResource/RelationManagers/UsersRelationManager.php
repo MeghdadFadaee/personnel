@@ -18,17 +18,6 @@ class UsersRelationManager extends RelationManager
 {
     protected static string $relationship = 'users';
 
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-
-            ]);
-    }
-
     public function table(Table $table): Table
     {
         return $table

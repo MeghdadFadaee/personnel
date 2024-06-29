@@ -39,7 +39,7 @@ class UserResource extends BaseResource
                 TextColumn::make('email'),
                 TextColumn::make('role')
                     ->formatStateUsing(fn(string $state): string => trans($state)),
-                TextColumn::make('projects.name')->badge(),
+                TextColumn::make('projects.title')->badge(),
 
             ])
             ->recordUrl(null)
