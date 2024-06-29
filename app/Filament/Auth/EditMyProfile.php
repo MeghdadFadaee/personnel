@@ -30,22 +30,22 @@ class EditMyProfile extends EditProfile
             ]);
     }
 
-    public function getPasswordComponent(): Component
+    public function getPasswordComponent(): TextInput|Component
     {
         return $this->getPasswordFormComponent();
     }
 
-    public function getPasswordConfirmationComponent(): Component
+    public function getPasswordConfirmationComponent(): TextInput|Component
     {
         return $this->getPasswordConfirmationFormComponent();
     }
 
-    public function getEmailComponent(): Component
+    public function getEmailComponent(): TextInput
     {
         return $this->getEmailFormComponent()->required(false);
     }
 
-    public function getUsernameComponent(): Component
+    public function getUsernameComponent(): TextInput
     {
         if (auth()->user()->isAdmin()) {
             return TextInput::make('username')
@@ -57,26 +57,26 @@ class EditMyProfile extends EditProfile
             ->disabled();
     }
 
-    public function getFirstNameComponent(): Component
+    public function getFirstNameComponent(): TextInput
     {
         return TextInput::make('first_name')
             ->maxLength(255);
     }
 
-    public function getLastNameComponent(): Component
+    public function getLastNameComponent(): TextInput
     {
         return TextInput::make('last_name')
             ->maxLength(255);
     }
 
-    public function getMobileComponent(): Component
+    public function getMobileComponent(): TextInput
     {
         return TextInput::make('mobile')
             ->unique(ignoreRecord: true)
             ->maxLength(255);
     }
 
-    public function getRoleComponent(): Component
+    public function getRoleComponent(): Select
     {
          return Select::make('role')
             ->options([

@@ -24,8 +24,15 @@ class UserResource extends BaseResource
         $editProfile = new EditMyProfile();
         return $form
             ->schema([
-                ...$editProfile->form->getComponents(),
+                $editProfile->getFirstNameComponent(),
+                $editProfile->getLastNameComponent(),
+                $editProfile->getUsernameComponent(),
+                $editProfile->getMobileComponent(),
+                $editProfile->getEmailComponent(),
                 $editProfile->getRoleComponent(),
+                $editProfile->getPasswordComponent()
+                    ->required(),
+                $editProfile->getPasswordConfirmationComponent(),
             ]);
     }
 
