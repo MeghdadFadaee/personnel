@@ -11,15 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('productivities', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('project_id');
 
-            $table->time('time')->nullable();
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('finished_at')->nullable();
+            $table->time('reduce')->nullable();
+            $table->time('vacation')->nullable();
+            $table->time('home_work')->nullable();
             $table->date('day');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['user_id', 'day']);
         });
     }
 
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('productivities');
+        Schema::dropIfExists('attendances');
     }
 };
