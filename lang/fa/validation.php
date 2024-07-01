@@ -36,7 +36,8 @@ return [
     'current_password' => 'رمزعبور صحیح نمی باشد',
     'date' => 'گزینه :attribute یک تاریخ صحیح نمی باشد',
     'date_equals' => 'گزینه :attribute باید تاریخی مساوی با :date باشد',
-    'date_format' => 'گزینه :attribute با فرمت :format همخوانی ندارد',
+    'date_format_' => 'گزینه :attribute با فرمت :format همخوانی ندارد',
+    'date_format' => 'گزینه :attribute یک زمان صحیح نمی باشد',
     'decimal' => 'گزینه :attribute باید :decimal رقم اعشار داشته باشد.',
     'declined' => 'گزینه :attribute باید رد شود',
     'declined_if' => 'گزینه :attribute زمانی که :other برابر :value است باید رد شود',
@@ -95,7 +96,7 @@ return [
     ],
     'max_digits' => 'گزینه :attribute نباید بیشتر از :max رقم باشد',
     'mimes' => 'گزینه :attribute باید دارای یکی از این فرمت ها باشد: :values',
-    'mimetypes' =>  'گزینه :attribute باید دارای یکی از این فرمت ها باشد: :values',
+    'mimetypes' => 'گزینه :attribute باید دارای یکی از این فرمت ها باشد: :values',
     'min' => [
         'array' => 'گزینه :attribute باید حداقل :min آیتم داشته باشد',
         'file' => 'گزینه :attribute باید حداقل :min کیلوبایت باشد',

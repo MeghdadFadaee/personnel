@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TimePicker;
+use Filament\Tables\Columns\TextInputColumn;
 use App\Filament\Resources\AttendanceResource\Pages;
 use App\Models\Attendance;
 use Filament\Forms\Form;
@@ -21,31 +24,41 @@ class AttendanceResource extends BaseResource
     {
         return $form
             ->schema([
-                //
+                TimePicker::make('started_at'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('user.full_name'),
-                TextColumn::make('started_at')
-                    ->jalaliDateTime(),
-                TextColumn::make('finished_at')
-                    ->jalaliDateTime(),
-                TextColumn::make('reduce'),
-                TextColumn::make('vacation'),
-                TextColumn::make('home_work'),
-                TextColumn::make('day')
-                    ->jalaliDate(),
+        $user = auth()->user();
+        $columns = [
+            TextColumn::make('user.full_name'),
+            TextColumn::make('day')
+                ->jalaliDate(),
+        ];
+        if ($user->isAdmin()) {
+            $columns[] = TextInputColumn::make('started_at')->time();
+            $columns[] = TextInputColumn::make('finished_at')->time();
+            $columns[] = TextInputColumn::make('reduce')->time();
+            $columns[] = TextInputColumn::make('vacation')->time();
+            $columns[] = TextInputColumn::make('home_work')->time();
+        } else {
+            $columns[] = TextColumn::make('started_at');
+            $columns[] = TextColumn::make('finished_at');
+            $columns[] = TextColumn::make('reduce');
+            $columns[] = TextColumn::make('vacation');
+            $columns[] = TextColumn::make('home_work');
+        }
 
-            ])
+        return $table
+            ->columns($columns)
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -70,8 +83,33 @@ class AttendanceResource extends BaseResource
         ];
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+        return match (true) {
+            $user->isAdmin() => parent::getEloquentQuery(),
+            default => parent::getEloquentQuery()->mine()
+        };
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->isAdmin();
+    }
+
     public static function canEdit(Model $record): bool
     {
         return auth()->user()->isAdmin();
     }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->isAdmin();
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return auth()->user()->isAdmin();
+    }
+
 }
