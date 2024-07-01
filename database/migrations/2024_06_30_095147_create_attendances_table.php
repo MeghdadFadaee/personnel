@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
 
-            $table->timestamp('started_at')->nullable();
-            $table->timestamp('finished_at')->nullable();
+            $table->time('started_at')->nullable();
+            $table->time('finished_at')->nullable();
             $table->time('reduce')->nullable();
             $table->time('vacation')->nullable();
             $table->time('home_work')->nullable();

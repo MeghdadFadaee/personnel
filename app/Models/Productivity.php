@@ -11,6 +11,15 @@ class Productivity extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'user_id',
+        'project_id',
+        'description',
+        'started_at',
+        'finished_at',
+        'day',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

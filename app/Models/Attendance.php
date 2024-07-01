@@ -11,6 +11,16 @@ class Attendance extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'user_id',
+        'started_at',
+        'finished_at',
+        'reduce',
+        'vacation',
+        'home_work',
+        'day',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

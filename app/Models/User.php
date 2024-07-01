@@ -5,6 +5,7 @@ namespace App\Models;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -70,6 +71,11 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class);
+    }
+
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
     }
 
     public function isAdmin(): bool

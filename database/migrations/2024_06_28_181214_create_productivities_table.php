@@ -16,7 +16,9 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('project_id');
 
-            $table->time('time')->nullable();
+            $table->string('description')->nullable();
+            $table->time('started_at')->nullable();
+            $table->time('finished_at')->nullable();
             $table->date('day');
             $table->timestamps();
             $table->softDeletes();
