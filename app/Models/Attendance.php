@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,9 +21,17 @@ class Attendance extends Model
         'home_work',
         'day',
     ];
+    protected $casts = [
+        'day' => 'date',
+    ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeForToDay(Builder $builder): void
+    {
+        $builder->whereDay('day', today());
     }
 }
