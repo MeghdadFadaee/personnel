@@ -7,7 +7,6 @@ use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -16,7 +15,7 @@ class ProjectResource extends BaseResource
     protected static ?string $model = Project::class;
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
 
     public static function form(Form $form): Form
     {
@@ -36,11 +35,6 @@ class ProjectResource extends BaseResource
                 TextColumn::make('users.full_name')->badge(),
             ])
             ->recordUrl(null)
-            ->actions([
-                Tables\Actions\ViewAction::make()->iconButton(),
-                Tables\Actions\EditAction::make()->iconButton(),
-                Tables\Actions\DeleteAction::make()->iconButton(),
-            ])
             ->bulkActions([
                 //
             ]);

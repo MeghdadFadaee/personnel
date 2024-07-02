@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Field;
 use Illuminate\Database\Query\Builder;
@@ -30,12 +33,24 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Table::configureUsing(function (Table $table): void {
+            $table->recordUrl('');
             $table->selectable();
+            $table->actions([
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton(),
+            ]);
+
         });
         Column::configureUsing(function (Column $column): void {
             $column->translateLabel();
             $column->searchable();
             $column->sortable();
+        });
+        Select::configureUsing(function (Select $column): void {
+            $column->translateLabel();
+            $column->searchable();
+            $column->preload();
         });
         Filter::configureUsing(function (Filter $filter): void {
             $filter->translateLabel();
@@ -51,11 +66,22 @@ class AppServiceProvider extends ServiceProvider
             /* @var Builder $this */
             return $this->where($column, auth()->id());
         });
+        Select::macro('setTitle', function (string $attribute) {
+            /* @var Select $this */
+            return $this->getOptionLabelFromRecordUsing(fn($record) => (string) $record[$attribute]);
+        });
+        TextInput::macro('time', function () {
+            /* @var TextInput $this */
+            $this->mask('99:99');
+            $this->placeholder('__:__');
+            $this->rules(['date_format:H:i']);
+            return $this;
+        });
         TextInputColumn::macro('time', function () {
             /* @var TextInputColumn $this */
-            $this->mask('99:99:99');
-            $this->placeholder('__:__:__');
-            $this->rules(['date_format:H:i:s']);
+            $this->mask('99:99');
+            $this->placeholder('__:__');
+            $this->rules(['date_format:H:i']);
             return $this;
         });
     }

@@ -2,15 +2,16 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Columns\TextInputColumn;
 use App\Filament\Resources\AttendanceResource\Pages;
 use App\Models\Attendance;
 use Filament\Forms\Form;
-use Filament\Tables;
 use Filament\Tables\Table;
 
 class AttendanceResource extends BaseResource
@@ -18,13 +19,33 @@ class AttendanceResource extends BaseResource
     protected static ?string $model = Attendance::class;
     protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TimePicker::make('started_at'),
+                Select::make('user_id')
+                    ->relationship('user')
+                    ->required()
+                    ->setTitle('full_name'),
+
+                DatePicker::make('day')
+                    ->required()
+                    ->jalali(),
+
+                TextInput::make('started_at')
+                    ->time(),
+                TextInput::make('finished_at')
+                    ->after('started_at')
+                    ->time(),
+                TextInput::make('reduce')
+                    ->time(),
+                TextInput::make('vacation')
+                    ->time(),
+                TextInput::make('home_work')
+                    ->time(),
+
             ]);
     }
 
@@ -55,15 +76,9 @@ class AttendanceResource extends BaseResource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make()->iconButton(),
-                Tables\Actions\EditAction::make()->iconButton(),
-                Tables\Actions\DeleteAction::make()->iconButton(),
-            ])
+            ->recordUrl(null)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 

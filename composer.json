@@ -9,7 +9,7 @@
         "filament/filament": "^3.2.0",
         "laravel/framework": "^11.12",
         "laravel/tinker": "^2.9",
-        "mokhosh/filament-jalali": "^3.2"
+        "mokhosh/filament-jalali": "^3.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
