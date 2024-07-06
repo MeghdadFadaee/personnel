@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Auth\EditMyProfile;
 use App\Filament\Auth\LoginByUsername;
 use App\Http\Middleware\AttendanceLog;
+use Filament\Navigation\NavigationItem;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -20,6 +21,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Resources\ProductivityResource\Pages\RegisterProductivity;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -40,11 +42,13 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                RegisterProductivity::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
             ])
+//            ->topNavigation()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

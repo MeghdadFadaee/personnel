@@ -107,24 +107,29 @@ class AttendanceResource extends BaseResource
         };
     }
 
-    public static function canCreate(): bool
+    public static function canAccess(): bool
     {
         return auth()->user()->isAdmin();
     }
 
-    public static function canEdit(Model $record): bool
-    {
-        return auth()->user()->isAdmin();
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return auth()->user()->isAdmin();
-    }
-
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()->isAdmin();
-    }
+//    public static function canCreate(): bool
+//    {
+//        return auth()->user()->isAdmin();
+//    }
+//
+//    public static function canEdit(Model $record): bool
+//    {
+//        return auth()->user()->isAdmin();
+//    }
+//
+//    public static function canDelete(Model $record): bool
+//    {
+//        return auth()->user()->isAdmin();
+//    }
+//
+//    public static function canDeleteAny(): bool
+//    {
+//        return auth()->user()->isAdmin();
+//    }
 
 }

@@ -7,7 +7,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
-use Illuminate\Database\Eloquent\Model;
 use App\Filament\Resources\ProductivityResource\Pages;
 use App\Models\Productivity;
 use Filament\Forms\Form;
@@ -79,7 +78,7 @@ class ProductivityResource extends BaseResource
         ];
     }
 
-    public static function canEdit(Model $record): bool
+    public static function canAccess(): bool
     {
         return auth()->user()->isAdmin();
     }
