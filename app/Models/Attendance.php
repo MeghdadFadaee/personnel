@@ -38,6 +38,6 @@ class Attendance extends Model
 
     public function scopeForToDay(Builder $builder): void
     {
-        $builder->whereDay('day', today());
+        $builder->whereDate('day', today());
     }
 }
