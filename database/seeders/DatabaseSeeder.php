@@ -12,9 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         UserSeeder::makeAdmin();
-        $this->call([
-            UserSeeder::class,
-            ProjectSeeder::class,
-        ]);
+//        $this->call([
+//            UserSeeder::class,
+//            ProjectSeeder::class,
+//        ]);
     }
 }
