@@ -1,0 +1,352 @@
+@charset "UTF-8";
+/*
+RTL Styles by MrCode
+https://mrcode.ir
+*/
+
+/*------------------------
+[TABLE OF CONTENTS]
+    
+1. GLOBAL STYLES
+2. NAVBAR
+3. HERO
+4. TABS
+5. TESTIMONIALS
+6. IMAGE GALLERY
+7. PRICING
+8. CALL TO ACTION
+9. FOOTER
+
+------------------------*/
+
+
+/* GLOBAL
+----------------------*/
+
+@font-face {
+  font-family: 'FYekan';
+  src: url('../fonts/yekan-webfont.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/yekan-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/Estedad-Medium.woff2') format('woff'), /* Pretty Modern Browsers */
+         url('../fonts/Estedad-Medium.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+
+body {
+	direction:rtl;
+    font-family: Estedad ,FYekan, "Segoe UI", Tahoma, sans-serif;
+    position: relative;
+    text-align:right;
+}
+
+
+h1 {
+    font-size: 60px;
+    font-weight: 300;
+    letter-spacing: -1px;
+}
+
+h2 {
+    font-size: 45px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    text-align: right;
+}
+
+h3 {
+    font-size: 33px;
+    font-weight: 500;
+	text-align: center;
+	margin: auto;
+	border-bottom: 8px solid #ff6090;
+	width:180px;
+	}
+
+h4 {
+    font-size: 23px;
+    font-weight: 500;
+	text-align: center;
+	margin: auto;
+	border-bottom: 8px solid #ff6090;
+	width:120px;
+	}
+h5 {
+    font-size: 28px;
+    font-weight: 400;
+    text-align: center;
+	margin: auto;
+	border-bottom: 8px solid #ff6090;
+	max-width:270px;
+}
+
+.owl-carousel h5 {
+    text-align:center;
+}
+
+.light-font {
+    font-weight: 300;
+}
+
+.btn {
+    font-size: 17px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    font-weight: 500;
+    padding: 0.6rem 2rem;
+    float: right;
+}
+
+.btn-light {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0.7rem 1.6rem;
+    line-height: 1.8;
+}
+
+.btn-group-lg>.btn,
+.btn-lg {
+    padding: 0.8rem 1rem;
+    font-size: 15px;
+}
+
+.section {
+padding-top:65px;
+    padding-right: 0px;
+    padding-bottom: 50px;
+    padding-left: 0px;}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+@media (max-width:959px) {
+    h1 {
+        font-size: 40px;
+    }
+    h2 {
+        font-size: 30px;
+    }
+}
+
+
+/* NAVBAR
+----------------------*/
+
+@media (min-width: 1080px) {
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 17px;
+    }
+    .navbar-nav>.nav-item>.nav-link.active:after {
+        right: 1rem;
+        left: 1rem;
+    }
+}
+
+
+
+/* HERO
+----------------------*/
+
+header {
+    padding: 100px 0 0;
+    text-align: center;
+    color: #FFF;
+}
+
+.tagline {
+    font-size: 23px;
+    font-weight: 300;
+    color: #ffb8f6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+@media (max-width:959px) {
+    .tagline {
+        font-size: 17px;
+    }
+}
+
+
+/* FEATURES
+----------------------*/
+
+.card.features:before {
+    right: 0;
+}
+
+.card-text {
+    font-size: 16px;
+}
+
+.circle-icon {
+    font-size: 48px;
+    text-align: center;
+    line-height: 80px;
+    font-weight: 300;
+    margin-left: 1.5rem!important;
+    margin-right: auto!important;
+}
+
+@media (max-width:1080px) {
+    .circle-icon {
+        font-size: 28px;
+        line-height: 50px;
+    }
+}
+
+
+/*  TABS
+----------------------*/
+
+.tab-content p {
+    line-height: 1.8;
+}
+
+.nav-tabs .nav-item .nav-link,
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover {
+    font-size: 19px;
+
+}
+
+
+/*  TESTIMONIALS
+----------------------*/
+.testimonials-single {
+    text-align: center;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.blockquote {
+    color: #ffffff;
+    font-weight: 300;
+    direction: rtl;
+}
+
+.owl-prev {
+    left: 0;
+}
+
+.owl-next {
+    right: 0;
+}
+
+
+/*  PRICING
+----------------------*/
+.card.pricing .card-head {
+    text-align: center;
+    padding: 40px 0 20px;
+}
+
+.card.pricing .card-head .price {
+    display: block;
+    font-size: 45px;
+    font-weight: 300;
+    color: #633991;
+}
+
+/*  CALL TO ACTION
+----------------------*/
+
+.call-to-action {
+    text-align: center!important;
+    color: #FFF;
+    margin: 3rem 0;
+}
+
+
+.call-to-action .box-icon {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.call-to-action .tagline {
+    font-size: 18px;
+    font-weight: 300;
+    margin: 0 auto;
+}
+
+.btn-light img {
+    margin-left: 0.4rem;
+    vertical-align: text-bottom;
+}
+
+
+/*  FOOTER
+----------------------*/
+
+.social-icons {
+    text-align: left;
+}
+
+@media (max-width: 1079px){
+.social-icons {
+    text-align: center;
+}
+}
+
+.social-icons a {
+    line-height: 50px;
+    margin: 0 0.3rem;
+}
+
+.social-icons a:hover {
+    text-decoration: none;
+    color: #e38cb7;
+}
+
+.navbar-nav {
+    margin-left: auto!important;
+    margin-right: initial!important;
+}
+
+
+.nav {
+    padding-right: 0;
+}
+
+.owl-carousel {
+    direction:ltr;
+}
+
+.pricing ul {
+	padding-left: initial;
+    padding-right: initial;
+}
+
+.sec-faq, .sec-faq p {
+	text-align: right;
+	direction:rtl;
+}
+
+
+.card-title, .card-text {
+	text-align:right!important;
+}
+
+.call-to-action h2,.call-to-action p,.call-to-action small {
+    text-align:center!important;
+}
+
+.navbar-brand {
+    margin-right: initial;
+    margin-left: 1rem;
+}
+
+.ti-headphone-alt::before, .ti-email::before {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+span.ti-email, span.ti-headphone-alt {
+	position:relative;
+}
