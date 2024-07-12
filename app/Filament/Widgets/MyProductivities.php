@@ -2,12 +2,11 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Attendance;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Models\Productivity;
 use Filament\Widgets\TableWidget;
-use Illuminate\Contracts\View\View;
-use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Htmlable;
