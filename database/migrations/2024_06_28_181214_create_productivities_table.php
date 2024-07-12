@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('productivities', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('project_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('project_id')->unsigned();
 
             $table->string('description')->nullable();
             $table->time('started_at')->nullable();

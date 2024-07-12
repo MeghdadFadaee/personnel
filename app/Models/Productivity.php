@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\TimeCast;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +21,11 @@ class Productivity extends Model
         'finished_at',
         'day',
     ];
+    protected $casts = [
+        'day' => 'date',
+        'started_at' => TimeCast::class,
+        'finished_at' => TimeCast::class,
+    ];
 
     public function user(): BelongsTo
     {
@@ -28,5 +35,15 @@ class Productivity extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function scopeForMe(Builder $builder): void
+    {
+        $builder->where('user_id', auth()->id());
+    }
+
+    public function scopeForToday(Builder $builder): void
+    {
+        $builder->whereDate('day', today());
     }
 }

@@ -4,8 +4,8 @@ namespace App\Providers\Filament;
 
 use App\Filament\Auth\EditMyProfile;
 use App\Filament\Auth\LoginByUsername;
+use App\Filament\Pages\RegisterProductivity;
 use App\Http\Middleware\AttendanceLog;
-use Filament\Navigation\NavigationItem;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -21,7 +21,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Filament\Resources\ProductivityResource\Pages\RegisterProductivity;
 
 class AdminPanelProvider extends PanelProvider
 {

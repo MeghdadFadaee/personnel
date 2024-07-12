@@ -20,7 +20,7 @@ class AttendanceLog
         if (Auth::check()) {
             Auth::user()
                 ->attendances()
-                ->forToDay()
+                ->forToday()
                 ->firstOrCreate();
         }
 

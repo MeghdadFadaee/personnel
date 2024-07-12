@@ -82,6 +82,12 @@ class AppServiceProvider extends ServiceProvider
             $this->mask('99:99');
             $this->placeholder('__:__');
             $this->rules(['date_format:H:i']);
+            $this->getState();
+            return $this;
+        });
+        TextInputColumn::macro('after', function ($field) {
+            /* @var TextInputColumn $this */
+            $this->rules[] = 'after:'.$field;
             return $this;
         });
     }

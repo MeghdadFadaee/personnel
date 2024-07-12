@@ -167,6 +167,12 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'started_at' => [
+            'after' => 'زمان شروع باید بعد از تمامی زمان های پایان باشد.',
+        ],
+        'finished_at' => [
+            'after' => 'زمان پایان باید بعد از زمان شروع باشد.',
+        ],
     ],
 
     /*

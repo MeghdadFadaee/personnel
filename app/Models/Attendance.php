@@ -36,7 +36,7 @@ class Attendance extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeForToDay(Builder $builder): void
+    public function scopeForToday(Builder $builder): void
     {
         $builder->whereDate('day', today());
     }

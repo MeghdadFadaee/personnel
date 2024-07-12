@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ProductivityResource\Pages;
+namespace App\Filament\Pages;
 
 use App\Models\Attendance;
 use App\Models\User;
@@ -12,7 +12,6 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
-use App\Filament\Widgets;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
@@ -54,7 +53,7 @@ class RegisterProductivity extends Page implements HasForms
     public function mount(): void
     {
         $this->user = auth()->user();
-        $this->attendance = $this->user->attendances()->forToDay()->first();
+        $this->attendance = $this->user->attendances()->forToday()->first();
 
         $this->form->fill($this->attendance->toArray());
     }
@@ -98,7 +97,7 @@ class RegisterProductivity extends Page implements HasForms
     protected function getFooterWidgets(): array
     {
         return [
-            Widgets\MyProductivities::make(),
+            \App\Filament\Pages\Widgets\MyProductivities::make(),
         ];
     }
 }

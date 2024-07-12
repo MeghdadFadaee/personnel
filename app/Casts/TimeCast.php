@@ -10,10 +10,9 @@ class TimeCast implements CastsAttributes
 {
     public function get(Model $model, string $key, mixed $value, array $attributes): ?string
     {
-        if (empty($value)) {
-            return null;
-        }
-        return  Carbon::parse($value)->format('H:i');
+        return empty($value)
+            ? null
+            : Carbon::parse($value)->format('H:i');
     }
 
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
