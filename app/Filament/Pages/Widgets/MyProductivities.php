@@ -49,7 +49,7 @@ class MyProductivities extends TableWidget
 
                             $id = Arr::get(request()->request->all(), 'components.0.calls.0.params.1');
                             $productivities = $this->getTableQuery()
-                                ->where('id', '<>', $id)
+                                ->where('id', '<', $id)
                                 ->get();
 
                             foreach ($productivities as $productivity) {
