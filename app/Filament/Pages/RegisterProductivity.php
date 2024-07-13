@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\User;
 use Ariaieboy\Jalali\CalendarUtils;
 use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Actions\Concerns\CanSubmitForm;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -83,6 +84,11 @@ class RegisterProductivity extends Page implements HasForms
         $this->validate();
 
         $this->attendance->update($this->form->getState());
+
+        Notification::make()
+            ->success()
+            ->title(trans('filament-panels::resources/pages/edit-record.notifications.saved.title'))
+            ->send();
     }
 
     protected function getHeaderActions(): array
@@ -90,7 +96,7 @@ class RegisterProductivity extends Page implements HasForms
         return [
             Action::make('save')
                 ->translateLabel()
-                ->action(fn () => $this->save())
+                ->action(fn() => $this->save()),
         ];
     }
 
