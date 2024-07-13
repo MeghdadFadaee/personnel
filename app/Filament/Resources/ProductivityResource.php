@@ -56,10 +56,7 @@ class ProductivityResource extends BaseResource
                 TextInputColumn::make('finished_at')->time(),
                 TextInputColumn::make('description'),
             ])
-            ->recordUrl(null)
-            ->bulkActions([
-                //
-            ]);
+            ->recordUrl(null);
     }
 
     public static function getRelations(): array

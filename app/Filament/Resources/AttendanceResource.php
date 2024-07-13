@@ -76,10 +76,7 @@ class AttendanceResource extends BaseResource
             ->filters([
                 //
             ])
-            ->recordUrl(null)
-            ->bulkActions([
-                //
-            ]);
+            ->recordUrl(null);
     }
 
     public static function getRelations(): array

@@ -49,10 +49,7 @@ class UserResource extends BaseResource
                 TextColumn::make('projects.title')->badge(),
 
             ])
-            ->recordUrl(null)
-            ->bulkActions([
-                //
-            ]);
+            ->recordUrl(null);
     }
 
     public static function getRelations(): array

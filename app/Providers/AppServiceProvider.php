@@ -14,6 +14,7 @@ use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Filament\Tables\Columns\TextInputColumn;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,7 +41,9 @@ class AppServiceProvider extends ServiceProvider
                 Tables\Actions\EditAction::make()->iconButton(),
                 Tables\Actions\DeleteAction::make()->iconButton(),
             ]);
-
+            $table->bulkActions([
+                ExportBulkAction::make(),
+            ]);
         });
         Column::configureUsing(function (Column $column): void {
             $column->translateLabel();
@@ -83,11 +86,6 @@ class AppServiceProvider extends ServiceProvider
             $this->placeholder('__:__');
             $this->rules(['date_format:H:i']);
             $this->getState();
-            return $this;
-        });
-        TextInputColumn::macro('after', function ($field) {
-            /* @var TextInputColumn $this */
-            $this->rules[] = 'after:'.$field;
             return $this;
         });
     }
