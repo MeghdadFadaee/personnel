@@ -30,6 +30,7 @@ class UserResource extends BaseResource
                     ->columnSpan(2)
                     ->tabs([
                         Tabs\Tab::make('Profile')
+                            ->icon('heroicon-o-user')
                             ->schema([
                                 $editProfile->getFirstNameComponent(),
                                 $editProfile->getLastNameComponent(),
@@ -40,6 +41,7 @@ class UserResource extends BaseResource
                                     ->required(),
                             ]),
                         Tabs\Tab::make('Work Hours')
+                            ->icon('heroicon-o-clock')
                             ->schema([
                                 TextInput::make('entered_at')
                                     ->time(),
@@ -57,6 +59,7 @@ class UserResource extends BaseResource
                                     ->time(),
                             ]),
                         Tabs\Tab::make('Password')
+                            ->icon('heroicon-o-lock-closed')
                             ->schema([
                                 $editProfile->getPasswordComponent(),
                                 $editProfile->getPasswordConfirmationComponent(),
