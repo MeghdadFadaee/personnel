@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Arr;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables;
@@ -45,6 +46,9 @@ class AppServiceProvider extends ServiceProvider
             $table->bulkActions([
                 ExportBulkAction::make(),
             ]);
+        });
+        Tabs\Tab::configureUsing(function (Tabs\Tab $tab): void {
+            $tab->translateLabel();
         });
         Column::configureUsing(function (Column $column): void {
             $column->translateLabel();

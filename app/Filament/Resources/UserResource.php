@@ -4,14 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Auth\EditMyProfile;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-
+use Filament\Forms\Components\Tabs;
 class UserResource extends BaseResource
 {
 
@@ -26,30 +25,43 @@ class UserResource extends BaseResource
         return $form
             ->columns(4)
             ->schema([
-                $editProfile->getFirstNameComponent(),
-                $editProfile->getLastNameComponent(),
-                $editProfile->getUsernameComponent(),
-                $editProfile->getMobileComponent(),
-                $editProfile->getEmailComponent(),
-                $editProfile->getRoleComponent()
-                    ->required(),
+                Placeholder::make(''),
+                Tabs::make('Tabs')
+                    ->columnSpan(2)
+                    ->tabs([
+                        Tabs\Tab::make('Profile')
+                            ->schema([
+                                $editProfile->getFirstNameComponent(),
+                                $editProfile->getLastNameComponent(),
+                                $editProfile->getUsernameComponent(),
+                                $editProfile->getMobileComponent(),
+                                $editProfile->getEmailComponent(),
+                                $editProfile->getRoleComponent()
+                                    ->required(),
+                            ]),
+                        Tabs\Tab::make('Work Hours')
+                            ->schema([
+                                TextInput::make('entered_at')
+                                    ->time(),
+                                TextInput::make('exited_at')
+                                    ->after('entered_at')
+                                    ->time(),
 
-                TextInput::make('entered_at')
-                    ->time(),
-                TextInput::make('exited_at')
-                    ->after('entered_at')
-                    ->time(),
+                                TextInput::make('wage')
+                                    ->prefix(trans('toman'))
+                                    ->integer()
+                                    ->nullable()
+                                    ->maxLength(255),
 
-                TextInput::make('wage')
-                    ->prefix(trans('toman'))
-                    ->nullable()
-                    ->maxLength(255),
-
-                TextInput::make('daily_duty')
-                    ->time(),
-
-                $editProfile->getPasswordComponent(),
-                $editProfile->getPasswordConfirmationComponent(),
+                                TextInput::make('daily_duty')
+                                    ->time(),
+                            ]),
+                        Tabs\Tab::make('Password')
+                            ->schema([
+                                $editProfile->getPasswordComponent(),
+                                $editProfile->getPasswordConfirmationComponent(),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -65,7 +77,8 @@ class UserResource extends BaseResource
                     ->formatStateUsing(fn(string $state): string => trans($state)),
                 TextColumn::make('entered_at'),
                 TextColumn::make('exited_at'),
-                TextColumn::make('wage'),
+                TextColumn::make('wage')
+                    ->prefix(trans('toman')),
                 TextColumn::make('daily_duty'),
                 TextColumn::make('projects.title')->badge(),
             ])

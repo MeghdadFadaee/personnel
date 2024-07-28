@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Auth\EditProfile;
+use Filament\Forms\Components\ToggleButtons;
 
 class EditMyProfile extends EditProfile
 {
@@ -76,13 +77,14 @@ class EditMyProfile extends EditProfile
             ->maxLength(255);
     }
 
-    public function getRoleComponent(): Select
+    public function getRoleComponent(): ToggleButtons
     {
-         return Select::make('role')
+        return ToggleButtons::make('role')
             ->options([
                 User::ROLE_ADMIN => trans(User::ROLE_ADMIN),
                 User::ROLE_USER => trans(User::ROLE_USER),
             ])
+            ->inline()
             ->default(User::ROLE_USER);
     }
 }
