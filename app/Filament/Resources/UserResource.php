@@ -34,7 +34,6 @@ class UserResource extends BaseResource
                             ->schema([
                                 $editProfile->getFirstNameComponent(),
                                 $editProfile->getLastNameComponent(),
-                                $editProfile->getUsernameComponent(),
                                 $editProfile->getMobileComponent(),
                                 $editProfile->getEmailComponent(),
                                 $editProfile->getRoleComponent()
@@ -58,9 +57,10 @@ class UserResource extends BaseResource
                                 TextInput::make('daily_duty')
                                     ->time(),
                             ]),
-                        Tabs\Tab::make('Password')
-                            ->icon('heroicon-o-lock-closed')
+                        Tabs\Tab::make('Login information')
+                            ->icon('heroicon-o-arrow-left-end-on-rectangle')
                             ->schema([
+                                $editProfile->getUsernameComponent(),
                                 $editProfile->getPasswordComponent(),
                                 $editProfile->getPasswordConfirmationComponent(),
                             ]),
