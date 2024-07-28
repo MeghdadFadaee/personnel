@@ -11,6 +11,7 @@ use Filament\Actions\Concerns\CanSubmitForm;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Illuminate\Support\Arr;
@@ -48,6 +49,7 @@ class RegisterProductivity extends Page implements HasForms
         /* @var Carbon $day */
         $day = $this->attendance->day;
         $jalali = CalendarUtils::toJalali($day->year, $day->month, $day->day);
+        $jalali = array_reverse($jalali);
         return $day->dayName.': '.Arr::join($jalali, '-');
     }
 
@@ -74,9 +76,16 @@ class RegisterProductivity extends Page implements HasForms
 //                    ->time(),
                 TextInput::make('home_work')
                     ->time(),
+
+                Actions::make([
+                    Actions\Action::make('save')
+                        ->translateLabel()
+                        ->action(fn() => $this->save()),
+                ])
+                ->verticallyAlignEnd(),
             ])
             ->model($this->attendance)
-            ->columns(5);
+            ->columns(8);
     }
 
     public function save(): void
@@ -89,15 +98,6 @@ class RegisterProductivity extends Page implements HasForms
             ->success()
             ->title(trans('filament-panels::resources/pages/edit-record.notifications.saved.title'))
             ->send();
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Action::make('save')
-                ->translateLabel()
-                ->action(fn() => $this->save()),
-        ];
     }
 
     protected function getFooterWidgets(): array

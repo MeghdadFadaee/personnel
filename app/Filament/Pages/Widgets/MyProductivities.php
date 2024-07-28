@@ -18,7 +18,6 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
 class MyProductivities extends TableWidget
@@ -55,7 +54,7 @@ class MyProductivities extends TableWidget
                             foreach ($productivities as $productivity) {
                                 $finish = Carbon::parse($productivity->finished_at);
                                 if ($start->isBefore($finish)) {
-                                    $fail("validation.custom.started_at.after")->translate();
+                                    $fail('validation.custom.started_at.after')->translate();
                                     return;
                                 }
                             }
@@ -77,9 +76,20 @@ class MyProductivities extends TableWidget
 
                             $start = Carbon::parse($model->started_at);
 
-
                             if ($finish->isBefore($start)) {
-                                $fail("validation.custom.finished_at.after")->translate();
+                                $fail('validation.custom.finished_at.after')->translate();
+                            }
+
+                            $productivities = $this->getTableQuery()
+                                ->where('id', '>', $id)
+                                ->get();
+
+                            foreach ($productivities as $productivity) {
+                                $otherStart = Carbon::parse($productivity->started_at);
+                                if ($finish->isAfter($otherStart)) {
+                                    $fail('validation.custom.finished_at.before')->translate();
+                                    return;
+                                }
                             }
                         },
                     ]),
