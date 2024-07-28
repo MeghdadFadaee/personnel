@@ -20,7 +20,11 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('user');
+            $table->enum('role', ['admin', 'user'])->default('user');
+            $table->time('entered_at')->nullable();
+            $table->time('exited_at')->nullable();
+            $table->string('wage')->nullable();
+            $table->time('daily_duty')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

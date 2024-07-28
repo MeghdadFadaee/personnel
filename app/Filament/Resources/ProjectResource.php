@@ -34,6 +34,7 @@ class ProjectResource extends BaseResource
                 TextColumn::make('title'),
                 TextColumn::make('users.full_name')->badge(),
             ])
+            ->toggleableAll()
             ->recordUrl(null);
     }
 

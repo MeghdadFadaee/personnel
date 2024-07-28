@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Auth\EditMyProfile;
+use Filament\Forms\Components\TextInput;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
@@ -23,15 +24,31 @@ class UserResource extends BaseResource
     {
         $editProfile = new EditMyProfile();
         return $form
+            ->columns(4)
             ->schema([
                 $editProfile->getFirstNameComponent(),
                 $editProfile->getLastNameComponent(),
                 $editProfile->getUsernameComponent(),
                 $editProfile->getMobileComponent(),
                 $editProfile->getEmailComponent(),
-                $editProfile->getRoleComponent(),
-                $editProfile->getPasswordComponent()
+                $editProfile->getRoleComponent()
                     ->required(),
+
+                TextInput::make('entered_at')
+                    ->time(),
+                TextInput::make('exited_at')
+                    ->after('entered_at')
+                    ->time(),
+
+                TextInput::make('wage')
+                    ->prefix(trans('toman'))
+                    ->nullable()
+                    ->maxLength(255),
+
+                TextInput::make('daily_duty')
+                    ->time(),
+
+                $editProfile->getPasswordComponent(),
                 $editProfile->getPasswordConfirmationComponent(),
             ]);
     }
@@ -46,9 +63,13 @@ class UserResource extends BaseResource
                 TextColumn::make('email'),
                 TextColumn::make('role')
                     ->formatStateUsing(fn(string $state): string => trans($state)),
+                TextColumn::make('entered_at'),
+                TextColumn::make('exited_at'),
+                TextColumn::make('wage'),
+                TextColumn::make('daily_duty'),
                 TextColumn::make('projects.title')->badge(),
-
             ])
+            ->toggleableAll()
             ->recordUrl(null);
     }
 

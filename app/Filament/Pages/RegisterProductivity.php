@@ -70,8 +70,8 @@ class RegisterProductivity extends Page implements HasForms
                     ->time(),
                 TextInput::make('reduce')
                     ->time(),
-                TextInput::make('vacation')
-                    ->time(),
+//                TextInput::make('vacation')
+//                    ->time(),
                 TextInput::make('home_work')
                     ->time(),
             ])

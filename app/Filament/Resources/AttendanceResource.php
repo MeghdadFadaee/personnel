@@ -76,6 +76,7 @@ class AttendanceResource extends BaseResource
             ->filters([
                 //
             ])
+            ->toggleableAll()
             ->recordUrl(null);
     }
 

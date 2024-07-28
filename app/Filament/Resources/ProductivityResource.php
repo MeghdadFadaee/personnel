@@ -56,6 +56,7 @@ class ProductivityResource extends BaseResource
                 TextInputColumn::make('finished_at')->time(),
                 TextInputColumn::make('description'),
             ])
+            ->toggleableAll()
             ->recordUrl(null);
     }
 

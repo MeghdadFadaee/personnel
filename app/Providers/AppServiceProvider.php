@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Arr;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables;
@@ -68,6 +69,16 @@ class AppServiceProvider extends ServiceProvider
         Builder::macro('mine', function (string $column = 'user_id') {
             /* @var Builder $this */
             return $this->where($column, auth()->id());
+        });
+
+        Table::macro('toggleableAll', function (array $except = []) {
+            /* @var Table $this */
+            foreach ($this->columns as $column) {
+                if (!Arr::exists($except, $column->getName())) {
+                    $column->toggleable();
+                }
+            }
+            return $this;
         });
         Select::macro('setTitle', function (string $attribute) {
             /* @var Select $this */
