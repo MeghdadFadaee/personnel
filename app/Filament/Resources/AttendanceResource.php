@@ -34,10 +34,10 @@ class AttendanceResource extends BaseResource
                     ->required()
                     ->jalali(),
 
-                TextInput::make('started_at')
+                TextInput::make('entered_at')
                     ->time(),
-                TextInput::make('finished_at')
-                    ->after('started_at')
+                TextInput::make('exited_at')
+                    ->after('entered_at')
                     ->time(),
                 TextInput::make('reduce')
                     ->time(),
@@ -58,14 +58,14 @@ class AttendanceResource extends BaseResource
                 ->jalaliDate(),
         ];
         if ($user->isAdmin()) {
-            $columns[] = TextInputColumn::make('started_at')->time();
-            $columns[] = TextInputColumn::make('finished_at')->time();
+            $columns[] = TextInputColumn::make('entered_at')->time();
+            $columns[] = TextInputColumn::make('exited_at')->time();
             $columns[] = TextInputColumn::make('reduce')->time();
             $columns[] = TextInputColumn::make('vacation')->time();
             $columns[] = TextInputColumn::make('home_work')->time();
         } else {
-            $columns[] = TextColumn::make('started_at');
-            $columns[] = TextColumn::make('finished_at');
+            $columns[] = TextColumn::make('entered_at');
+            $columns[] = TextColumn::make('exited_atv');
             $columns[] = TextColumn::make('reduce');
             $columns[] = TextColumn::make('vacation');
             $columns[] = TextColumn::make('home_work');

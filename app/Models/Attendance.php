@@ -15,8 +15,8 @@ class Attendance extends Model
 
     protected $fillable = [
         'user_id',
-        'started_at',
-        'finished_at',
+        'entered_at',
+        'exited_at',
         'reduce',
         'vacation',
         'home_work',
@@ -24,8 +24,8 @@ class Attendance extends Model
     ];
     protected $casts = [
         'day' => 'date',
-        'started_at' => TimeCast::class,
-        'finished_at' => TimeCast::class,
+        'entered_at' => TimeCast::class,
+        'exited_at' => TimeCast::class,
         'reduce' => TimeCast::class,
         'vacation' => TimeCast::class,
         'home_work' => TimeCast::class,

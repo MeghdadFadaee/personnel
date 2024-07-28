@@ -28,8 +28,8 @@ class RegisterProductivity extends Page implements HasForms
 
     public User $user;
     public Attendance $attendance;
-    public ?string $started_at;
-    public ?string $finished_at;
+    public ?string $entered_at;
+    public ?string $exited_at;
     public ?string $reduce;
     public ?string $vacation;
     public ?string $home_work;
@@ -65,10 +65,10 @@ class RegisterProductivity extends Page implements HasForms
     {
         return $form
             ->schema([
-                TextInput::make('started_at')
+                TextInput::make('entered_at')
                     ->time(),
-                TextInput::make('finished_at')
-                    ->after('started_at')
+                TextInput::make('exited_at')
+                    ->after('entered_at')
                     ->time(),
                 TextInput::make('reduce')
                     ->time(),
