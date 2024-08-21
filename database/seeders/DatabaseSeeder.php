@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        UserSeeder::makeAdmin();
+        UserSeeder::creatAdmin();
 //        $this->call([
 //            UserSeeder::class,
 //            ProjectSeeder::class,

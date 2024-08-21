@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         User::factory(10)->create();
     }
 
-    public static function makeAdmin(): void
+    public static function crateAdmin(): void
     {
         User::factory()->create([
             'first_name' => 'admin',
