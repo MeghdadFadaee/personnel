@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 class UpdateRepository extends Widget
 {
     protected static ?int $sort = 2;
-    protected int|string|array $columnSpan = 1;
+    protected int|string|array $columnSpan = 2;
     protected static bool $isLazy = false;
 
     protected static string $view = 'filament.resources.widgets.update-repository';
