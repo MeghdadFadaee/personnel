@@ -14,6 +14,9 @@ class UpdateRepository extends Widget
 
     protected static string $view = 'filament.resources.widgets.update-repository';
 
+    public string $reset = '';
+    public string $pull = '';
+
     public static function canView(): bool
     {
         return auth()->user()->isAdmin();
@@ -21,20 +24,12 @@ class UpdateRepository extends Widget
 
     public function update(): void
     {
-        $command = new Process(["git reset --hard", "git pull"]);
-        $command->setWorkingDirectory(base_path());
-        $command->run();
+        $this->reset = shell_exec('git reset --hard');
+        $this->pull = shell_exec('git pull');
 
-        if($command->isSuccessful()){
-            Notification::make()
-                ->title(__('The action ran successfully!'))
-                ->success()
-                ->send();
-        } else {
-            Notification::make()
-                ->title(__('The action was executed successfully.'))
-                ->danger()
-                ->send();
-        }
+        Notification::make()
+            ->title(__('The action ran successfully!'))
+            ->success()
+            ->send();
     }
 }
