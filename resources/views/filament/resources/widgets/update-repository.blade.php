@@ -3,7 +3,7 @@
         <div class="flex items-center gap-x-3">
 
             <x-filament::button
-                    color="info"
+                    color="primary"
                     icon="heroicon-m-arrow-path"
                     labeled-from="sm"
                     tag="button"
