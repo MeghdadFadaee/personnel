@@ -881,6 +881,7 @@
   "The :resource was restored!": ":Resource بازیابی شد!",
   "The :resource was updated!": ":Resource بروزرسانی شد!",
   "The action ran successfully!": "عملیات با موفقیت اجرا شد!",
+  "The action ended in failure!": "عملیات با شکست به پایان رسید!",
   "The action was executed successfully.": "عملیات با موفقیت انجام شد.",
   "The benefits of your subscription will continue until your current billing period ends on :date. You may resume your subscription at no extra cost until the end of the billing period.": "مزایای اشتراک شما تا پایان دوره صورتحساب فعلی شما در تاریخ :date ادامه خواهد داشت. شما می توانید اشتراک خود را بدون هزینه اضافی تا پایان دوره صورتحساب از سر بگیرید.",
   "The coupon :value discount will be applied to your subscription!": "این کوپن :value تخفیف برروی اشتراک شما اعمال خواهد کرد!",
