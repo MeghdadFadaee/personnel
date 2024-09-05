@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,7 +31,7 @@ class AttendanceResource extends BaseResource
                     ->required()
                     ->setTitle('full_name'),
 
-                DatePicker::make('day')
+                DateTimePicker::make('day')
                     ->required()
                     ->jalali(),
 
