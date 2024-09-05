@@ -21,10 +21,13 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
+
             $table->time('entered_at')->nullable();
             $table->time('exited_at')->nullable();
-            $table->string('wage')->nullable();
             $table->time('daily_duty')->nullable();
+            $table->integer('hourly_salary')->nullable();
+            $table->integer('piece_salary')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
