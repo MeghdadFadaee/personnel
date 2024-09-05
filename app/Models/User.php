@@ -68,6 +68,11 @@ class User extends Authenticatable implements FilamentUser, HasName
         ];
     }
 
+    public function employers(): BelongsToMany
+    {
+        return $this->belongsToMany(Employer::class);
+    }
+
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class);

@@ -11,19 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('performances', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->integer('amount')->unsigned();
-            $table->integer('fee')->unsigned();
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
-        Schema::create('project_user', function(Blueprint $table)
-        {
             $table->integer('user_id')->unsigned();
             $table->integer('project_id')->unsigned();
+            $table->date('completed_count');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -32,7 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
-        Schema::dropIfExists('project_user');
+        Schema::dropIfExists('performances');
     }
 };

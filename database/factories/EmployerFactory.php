@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<Project>
  */
-class ProjectFactory extends Factory
+class EmployerFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +18,7 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake('en')->jobTitle(),
-            'amount' => fake()->numberBetween(0, 10),
-            'fee' => round(fake()->numberBetween(10_000, 100_000), -3),
+            'title' => fake()->company(),
         ];
     }
 }

@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('employers', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('amount')->unsigned();
-            $table->integer('fee')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('project_user', function(Blueprint $table)
+        Schema::create('employer_user', function(Blueprint $table)
         {
             $table->integer('user_id')->unsigned();
-            $table->integer('project_id')->unsigned();
+            $table->integer('employer_id')->unsigned();
         });
     }
 
@@ -32,7 +30,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
-        Schema::dropIfExists('project_user');
+        Schema::dropIfExists('employers');
+        Schema::dropIfExists('employer_user');
     }
 };

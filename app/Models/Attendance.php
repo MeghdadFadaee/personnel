@@ -22,14 +22,18 @@ class Attendance extends Model
         'home_work',
         'day',
     ];
-    protected $casts = [
-        'day' => 'date',
-        'entered_at' => TimeCast::class,
-        'exited_at' => TimeCast::class,
-        'reduce' => TimeCast::class,
-        'vacation' => TimeCast::class,
-        'home_work' => TimeCast::class,
-    ];
+
+    protected function casts(): array
+    {
+        return [
+            'day' => 'date',
+            'entered_at' => TimeCast::class,
+            'exited_at' => TimeCast::class,
+            'reduce' => TimeCast::class,
+            'vacation' => TimeCast::class,
+            'home_work' => TimeCast::class,
+        ];
+    }
 
     public function user(): BelongsTo
     {

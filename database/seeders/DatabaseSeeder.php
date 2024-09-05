@@ -11,10 +11,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        UserSeeder::creatAdmin();
-//        $this->call([
-//            UserSeeder::class,
-//            ProjectSeeder::class,
-//        ]);
+        UserSeeder::crateAdmin();
+
+        $answer = $this->command->choice('do you wank create fake data?', ['Yes', 'No'], 1);
+        if ($answer == 'Yes') {
+            $this->call([
+                UserSeeder::class,
+                EmployerSeeder::class,
+                ProjectSeeder::class,
+            ]);
+        }
     }
 }
