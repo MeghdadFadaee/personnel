@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         UserSeeder::crateAdmin();
 
-        $answer = $this->command->choice('do you wank create fake data?', [1 => 'Yes', 2 => 'No'], 2);
+        $answer = $this->command->choice('do you want create fake data?', [1 => 'Yes', 2 => 'No'], 2);
         if ($answer == 'Yes') {
             $this->call([
                 UserSeeder::class,
