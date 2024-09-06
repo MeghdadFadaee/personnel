@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Tabs;
+
 class UserResource extends BaseResource
 {
 
@@ -22,6 +23,7 @@ class UserResource extends BaseResource
     public static function form(Form $form): Form
     {
         $editProfile = new EditMyProfile();
+        $isCreate = $form->getOperation() === "create";
         return $form
             ->columns(4)
             ->schema([
@@ -47,21 +49,27 @@ class UserResource extends BaseResource
                                 TextInput::make('exited_at')
                                     ->after('entered_at')
                                     ->time(),
+                                TextInput::make('daily_duty')
+                                    ->time(),
 
-                                TextInput::make('wage')
+                                TextInput::make('hourly_salary')
                                     ->prefix(trans('toman'))
                                     ->integer()
                                     ->nullable()
-                                    ->maxLength(255),
+                                    ->default(0),
 
-                                TextInput::make('daily_duty')
-                                    ->time(),
+                                TextInput::make('piece_salary')
+                                    ->prefix(trans('toman'))
+                                    ->integer()
+                                    ->nullable()
+                                    ->default(0),
                             ]),
                         Tabs\Tab::make('Login information')
                             ->icon('heroicon-o-arrow-left-end-on-rectangle')
                             ->schema([
                                 $editProfile->getUsernameComponent(),
-                                $editProfile->getPasswordComponent(),
+                                $editProfile->getPasswordComponent()
+                                    ->required($isCreate),
                                 $editProfile->getPasswordConfirmationComponent(),
                             ]),
                     ]),
@@ -72,17 +80,22 @@ class UserResource extends BaseResource
     {
         return $table
             ->columns([
-                TextColumn::make('full_name'),
+                TextColumn::make('full_name')
+                    ->sortable(['first_name', 'last_name']),
                 TextColumn::make('username'),
                 TextColumn::make('mobile'),
                 TextColumn::make('email'),
                 TextColumn::make('role')
+                    ->badge()
                     ->formatStateUsing(fn(string $state): string => trans($state)),
                 TextColumn::make('entered_at'),
                 TextColumn::make('exited_at'),
-                TextColumn::make('wage')
-                    ->prefix(trans('toman')),
                 TextColumn::make('daily_duty'),
+                TextColumn::make('hourly_salary')
+                    ->prefix(trans('toman')),
+                TextColumn::make('piece_salary')
+                    ->prefix(trans('toman')),
+                TextColumn::make('employers.title')->badge(),
                 TextColumn::make('projects.title')->badge(),
             ])
             ->toggleableAll()

@@ -23,7 +23,6 @@ class EditMyProfile extends EditProfile
             ->schema([
                 $this->getFirstNameComponent(),
                 $this->getLastNameComponent(),
-                $this->getUsernameComponent(),
                 $this->getMobileComponent(),
                 $this->getEmailComponent(),
                 $this->getPasswordComponent(),

@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('amount')->unsigned();
-            $table->integer('fee')->unsigned();
+            $table->integer('amount')
+                ->default(0)
+                ->unsigned();
+            $table->integer('fee')
+                ->default(0)
+                ->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

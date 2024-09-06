@@ -2,19 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProjectResource\Pages;
-use App\Models\Project;
+use App\Filament\Resources\EmployerResource\Pages;
+use App\Models\Employer;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ProjectResource extends BaseResource
+class EmployerResource extends BaseResource
 {
-    protected static ?string $model = Project::class;
-    protected static ?int $navigationSort = 4;
+    protected static ?string $model = Employer::class;
+    protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -23,16 +23,6 @@ class ProjectResource extends BaseResource
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-
-                TextInput::make('amount')
-                    ->integer()
-                    ->default(0),
-
-                TextInput::make('fee')
-                    ->prefix(trans('toman'))
-                    ->integer()
-                    ->nullable()
-                    ->default(0),
             ]);
     }
 
@@ -41,11 +31,6 @@ class ProjectResource extends BaseResource
         return $table
             ->columns([
                 TextColumn::make('title'),
-                TextColumn::make('amount'),
-
-                TextColumn::make('fee')
-                    ->prefix(trans('toman')),
-
                 TextColumn::make('users.full_name')->badge(),
             ])
             ->toggleableAll()
@@ -62,9 +47,9 @@ class ProjectResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProjects::route('/'),
-            'create' => Pages\CreateProject::route('/create'),
-            'edit' => Pages\EditProject::route('/{record}/edit'),
+            'index' => Pages\ListEmployers::route('/'),
+            'create' => Pages\CreateEmployer::route('/create'),
+            'edit' => Pages\EditEmployer::route('/{record}/edit'),
         ];
     }
 
