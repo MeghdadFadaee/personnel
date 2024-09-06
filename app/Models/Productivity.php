@@ -19,6 +19,7 @@ class Productivity extends Model
         'description',
         'started_at',
         'finished_at',
+        'leave_time',
         'day',
     ];
 

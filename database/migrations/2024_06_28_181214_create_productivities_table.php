@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->time('started_at')->nullable();
             $table->time('finished_at')->nullable();
-            $table->time('leave')->nullable();
+            $table->time('leave_time')->nullable();
             $table->date('day');
             $table->timestamps();
             $table->softDeletes();
