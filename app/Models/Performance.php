@@ -33,4 +33,9 @@ class Performance extends Model
     {
         $builder->where('user_id', auth()->id());
     }
+
+    public function scopeForToday(Builder $builder): void
+    {
+        $builder->whereDate('created_at', today());
+    }
 }

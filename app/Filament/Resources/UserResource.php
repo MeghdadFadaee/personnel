@@ -117,9 +117,4 @@ class UserResource extends BaseResource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isAdmin();
-    }
 }

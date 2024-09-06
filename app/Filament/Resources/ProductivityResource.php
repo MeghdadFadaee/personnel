@@ -86,9 +86,4 @@ class ProductivityResource extends BaseResource
             'edit' => Pages\EditProductivity::route('/{record}/edit'),
         ];
     }
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isAdmin();
-    }
 }

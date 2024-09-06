@@ -4,7 +4,6 @@ namespace App\Filament\Pages;
 
 use App\Models\Attendance;
 use App\Models\User;
-use Morilog\Jalali\CalendarUtils;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Actions\Concerns\CanSubmitForm;
@@ -14,14 +13,15 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Morilog\Jalali\Jalalian;
 
-class RegisterProductivity extends Page implements HasForms
+class RegisterActivity extends Page implements HasForms
 {
     use InteractsWithForms, CanSubmitForm;
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 8;
+
     protected static bool $shouldRegisterNavigation = true;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static string $view = 'filament.resources.productivity-resource.pages.register-productivity';
@@ -48,9 +48,7 @@ class RegisterProductivity extends Page implements HasForms
     {
         /* @var Carbon $day */
         $day = $this->attendance->day;
-        $jalali = CalendarUtils::toJalali($day->year, $day->month, $day->day);
-        $jalali = array_reverse($jalali);
-        return $day->dayName.': '.Arr::join($jalali, '-');
+        return Jalalian::fromCarbon($day)->format('l: d-m-Y');
     }
 
     public function mount(): void
@@ -104,6 +102,12 @@ class RegisterProductivity extends Page implements HasForms
     {
         return [
             \App\Filament\Pages\Widgets\MyProductivities::make(),
+            \App\Filament\Pages\Widgets\MyPerformances::make(),
         ];
+    }
+
+    public function getFooterWidgetsColumns(): int|string|array
+    {
+        return 5;
     }
 }

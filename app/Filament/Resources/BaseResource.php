@@ -18,4 +18,9 @@ abstract class BaseResource extends Resource
         $table = app(static::getModel())->getTable();
         return trans($table);
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdmin();
+    }
 }

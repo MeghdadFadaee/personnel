@@ -85,9 +85,4 @@ class AttendanceResource extends BaseResource
             'edit' => Pages\EditAttendance::route('/{record}/edit'),
         ];
     }
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isAdmin();
-    }
 }

@@ -22,7 +22,7 @@ use Illuminate\Validation\Validator;
 
 class MyProductivities extends TableWidget
 {
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 3;
 
     protected static ?int $sort = 2;
 
@@ -34,7 +34,7 @@ class MyProductivities extends TableWidget
             ->modelLabel(trans('productivity'))
             ->pluralModelLabel(trans('productivities'))
             ->columns([
-                TextColumn::make('project.title'),
+                TextColumn::make('employer.title'),
                 TextInputColumn::make('started_at')
                     ->time()
                     ->rules([
@@ -119,14 +119,14 @@ class MyProductivities extends TableWidget
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->form([
-                        Select::make('project')
-                            ->options(auth()->user()->projects()->pluck('title', 'id'))
+                        Select::make('employer')
+                            ->options(auth()->user()->employers()->pluck('title', 'id'))
                             ->preload()
                     ])
                     ->action(function (array $data) {
                         Productivity::create([
                             'user_id' => auth()->id(),
-                            'project_id' => $data['project'],
+                            'employer_id' => $data['employer'],
                             'day' => today(),
                         ]);
                     })

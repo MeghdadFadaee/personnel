@@ -52,9 +52,4 @@ class EmployerResource extends BaseResource
             'edit' => Pages\EditEmployer::route('/{record}/edit'),
         ];
     }
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isAdmin();
-    }
 }

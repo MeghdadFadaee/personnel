@@ -4,7 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Auth\EditMyProfile;
 use App\Filament\Auth\LoginByUsername;
-use App\Filament\Pages\RegisterProductivity;
+use App\Filament\Pages\RegisterActivity;
 use App\Http\Middleware\AttendanceLog;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -43,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-                RegisterProductivity::class
+                RegisterActivity::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
