@@ -2,6 +2,7 @@
 
 namespace App\Filament\RelationManagers;
 
+use Illuminate\Contracts\View\View;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\AttachAction;
@@ -38,6 +39,11 @@ class UsersRelationManager extends RelationManager
     }
 
     protected function getTableHeading(): string|Htmlable|null
+    {
+        return trans(self::$relationship);
+    }
+
+    protected static function getPluralModelLabel(): ?string
     {
         return trans(self::$relationship);
     }
