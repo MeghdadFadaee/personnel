@@ -40,6 +40,11 @@ class Attendance extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeForMe(Builder $builder): void
+    {
+        $builder->where('user_id', auth()->id());
+    }
+
     public function scopeForToday(Builder $builder): void
     {
         $builder->whereDate('day', today());

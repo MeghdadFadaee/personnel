@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -60,7 +62,9 @@ class AttendanceResource extends BaseResource
                 TextInputColumn::make('entered_at')->time(),
                 TextInputColumn::make('exited_at')->time(),
                 TextInputColumn::make('reduce')->time(),
-                TextInputColumn::make('vacation')->time(),
+                TextInputColumn::make('vacation')
+                    ->visible(auth()->user()->isAdmin())
+                    ->time(),
                 TextInputColumn::make('home_work')->time(),
             ])
             ->filters([
@@ -68,6 +72,15 @@ class AttendanceResource extends BaseResource
             ])
             ->toggleableAll()
             ->recordUrl(null);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        if (!auth()->user()->isAdmin()) {
+            $query->forMe();
+        }
+        return $query;
     }
 
     public static function getRelations(): array
@@ -84,5 +97,15 @@ class AttendanceResource extends BaseResource
             'create' => Pages\CreateAttendance::route('/create'),
             'edit' => Pages\EditAttendance::route('/{record}/edit'),
         ];
+    }
+
+    public static function canAccess(): bool
+    {
+        return true;
+    }
+
+    public static function can(string $action, ?Model $record = null): bool
+    {
+        return auth()->user()->isAdmin();
     }
 }
