@@ -58,11 +58,11 @@ class UserResource extends BaseResource
                                     ->nullable()
                                     ->default(0),
 
-                                TextInput::make('piece_salary')
-                                    ->prefix(trans('toman'))
-                                    ->integer()
-                                    ->nullable()
-                                    ->default(0),
+//                                TextInput::make('piece_salary')
+//                                    ->prefix(trans('toman'))
+//                                    ->integer()
+//                                    ->nullable()
+//                                    ->default(0),
                             ]),
                         Tabs\Tab::make('Login information')
                             ->icon('heroicon-o-arrow-left-end-on-rectangle')
