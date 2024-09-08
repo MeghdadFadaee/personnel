@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Columns\TextInputColumn;
 use App\Filament\Resources\PerformanceResource\Pages;
 use App\Models\Performance;
 use Filament\Forms\Components\Select;
@@ -55,7 +56,8 @@ class PerformanceResource extends BaseResource
                 TextColumn::make('day')
                     ->jalaliDate(),
 
-                TextColumn::make('completed_count'),
+                TextInputColumn::make('completed_count')
+                    ->rules(['integer']),
 
             ])
             ->toggleableAll()

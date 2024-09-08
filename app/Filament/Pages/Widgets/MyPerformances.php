@@ -2,7 +2,10 @@
 
 namespace App\Filament\Pages\Widgets;
 
+use Closure;
 use App\Models\Performance;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\Validator;
 use Filament\Forms\Components\Select;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -30,17 +33,28 @@ class MyPerformances extends TableWidget
             ->columns([
                 TextColumn::make('project.title'),
                 TextInputColumn::make('completed_count')
-                    ->rules(['integer'])
-                    ->summarize([
-                        Summarizers\Sum::make()
+                    ->rules([
+                        'integer',
+                        function (string $attribute, $value, Closure $fail, Validator $validator) {
+                            $id = Arr::get(request()->request->all(), 'components.0.calls.0.params.1');
+                            $performance = $this->getTableQuery()
+                                ->find($id);
+
+                            if ($performance->project->amount < $value) {
+                                $fail('validation.lte.numeric')->translate(['value' => $performance->project->amount]);
+                            }
+                        },
                     ])
+                    ->summarize([
+                        Summarizers\Sum::make(),
+                    ]),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->form([
                         Select::make('project')
                             ->options(auth()->user()->projects()->pluck('title', 'id'))
-                            ->preload()
+                            ->preload(),
                     ])
                     ->action(function (array $data) {
                         Performance::create([
@@ -48,7 +62,7 @@ class MyPerformances extends TableWidget
                             'project_id' => $data['project'],
                             'day' => today(),
                         ]);
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()->iconButton(),

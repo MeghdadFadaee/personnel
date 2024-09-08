@@ -113,15 +113,15 @@ class MyProductivities extends TableWidget
                                     }
                                 }
                                 return $finishes->diff($starts)->forHumans();
-                            })
-                    ])
+                            }),
+                    ]),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->form([
                         Select::make('employer')
                             ->options(auth()->user()->employers()->pluck('title', 'id'))
-                            ->preload()
+                            ->preload(),
                     ])
                     ->action(function (array $data) {
                         Productivity::create([
@@ -129,7 +129,7 @@ class MyProductivities extends TableWidget
                             'employer_id' => $data['employer'],
                             'day' => today(),
                         ]);
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()->iconButton(),
