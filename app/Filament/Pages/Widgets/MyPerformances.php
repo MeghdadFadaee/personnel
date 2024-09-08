@@ -46,6 +46,7 @@ class MyPerformances extends TableWidget
                         Performance::create([
                             'user_id' => auth()->id(),
                             'project_id' => $data['project'],
+                            'day' => today(),
                         ]);
                     })
             ])

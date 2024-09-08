@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms\Components\DatePicker;
 use App\Filament\Resources\PerformanceResource\Pages;
 use App\Models\Performance;
 use Filament\Forms\Components\Select;
@@ -31,6 +32,10 @@ class PerformanceResource extends BaseResource
                     ->relationship('project', 'title')
                     ->required(),
 
+                DatePicker::make('day')
+                    ->required()
+                    ->jalali(),
+
                 TextInput::make('completed_count')
                     ->default(0)
                     ->integer(),
@@ -46,6 +51,10 @@ class PerformanceResource extends BaseResource
                     ->sortable(['first_name', 'last_name']),
 
                 TextColumn::make('project.title'),
+
+                TextColumn::make('day')
+                    ->jalaliDate(),
+
                 TextColumn::make('completed_count'),
 
             ])

@@ -18,6 +18,14 @@ class Performance extends Model
         'completed_count',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'day' => 'date',
+        ];
+    }
+
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -36,6 +44,6 @@ class Performance extends Model
 
     public function scopeForToday(Builder $builder): void
     {
-        $builder->whereDate('created_at', today());
+        $builder->whereDate('day', today());
     }
 }

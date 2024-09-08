@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->integer('completed_count')
                 ->default(0)
                 ->unsigned();
+            $table->date('day');
             $table->timestamps();
             $table->softDeletes();
         });
