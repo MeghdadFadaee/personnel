@@ -55,7 +55,7 @@ class ReportProject extends BaseListRecords
             ->columns(4);
     }
 
-    function reloadTable(): void
+    public function reloadTable(): void
     {
 
         $this->table->modifyQueryUsing(function (Builder $query) {
@@ -70,7 +70,7 @@ class ReportProject extends BaseListRecords
                 }
             };
 
-            return $this->table->getQuery()
+            return self::getResource()::getEloquentQuery()
                 ->withSum(['performances' => $relationFilter], 'completed_count');
         });
 
