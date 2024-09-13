@@ -5,6 +5,8 @@ namespace App\Providers\Filament;
 use App\Filament\Auth\EditMyProfile;
 use App\Filament\Auth\LoginByUsername;
 use App\Filament\Pages\RegisterActivity;
+use App\Filament\Resources\EmployerResource\Pages\ReportEmployer;
+use App\Filament\Resources\ProjectResource\Pages\ReportProject;
 use App\Http\Middleware\AttendanceLog;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -41,15 +43,16 @@ class AdminPanelProvider extends PanelProvider
             ->font('IRANSansWeb', '/fonts/stylesheet.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->pages([
                 Pages\Dashboard::class,
-                RegisterActivity::class
+                RegisterActivity::class,
+                ReportEmployer::class,
+                ReportProject::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
             ])
-//            ->topNavigation()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
