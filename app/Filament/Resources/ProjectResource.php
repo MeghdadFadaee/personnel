@@ -42,10 +42,12 @@ class ProjectResource extends BaseResource
         return $table
             ->columns([
                 TextColumn::make('title'),
-                TextColumn::make('amount'),
+                TextColumn::make('amount')
+                    ->numeric(),
 
                 TextColumn::make('fee')
-                    ->prefix(trans('toman')),
+                    ->prefix(trans('toman'))
+                    ->numeric(),
 
                 TextColumn::make('users.full_name')->badge(),
             ])
