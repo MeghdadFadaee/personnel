@@ -820,6 +820,7 @@
     "Stop Polling": "اتمام نظرسنجی",
     "Stop polling": "اتمام نظرسنجی",
     "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.": "این کدهای بازیابی را در یک جای امن ذخیره کنید. اگر دستگاه احراز هویت دو مرحله ای شما از بین رفت ، می‌توان از آنها برای بازیابی دسترسی به حساب شما استفاده کرد.",
+    "Sum": "مجموع",
     "Subject": "موضوع",
     "Subscribe": "مشترک شوید",
     "Subscribers": "اشتراک ها",
@@ -1192,6 +1193,8 @@
     "Register Activity": "ثبت فعالیت",
     "My Productivities": "ساعت کاری های من",
     "My Performances": "عملکرد های من",
+    "Starts at": "شروع در",
+    "Ends at": "پایان در",
     "Total fee": "مجموع حق الزحمه",
     "Performances sum completed count": "تعداد پروژه انجام شده"
 }
