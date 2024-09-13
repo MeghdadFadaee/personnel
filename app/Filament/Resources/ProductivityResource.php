@@ -15,7 +15,7 @@ use Filament\Tables\Table;
 class ProductivityResource extends BaseResource
 {
     protected static ?string $model = Productivity::class;
-    protected static ?int $navigationSort = 6;
+    protected static string $navigationAfter = AttendanceResource::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clock';
 

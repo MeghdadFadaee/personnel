@@ -12,7 +12,7 @@ use Filament\Tables\Table;
 class EmployerResource extends BaseResource
 {
     protected static ?string $model = Employer::class;
-    protected static ?int $navigationSort = 3;
+    protected static string $navigationAfter = UserResource::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -50,6 +50,7 @@ class EmployerResource extends BaseResource
             'index' => Pages\ListEmployers::route('/'),
             'create' => Pages\CreateEmployer::route('/create'),
             'edit' => Pages\EditEmployer::route('/{record}/edit'),
+            'report' => Pages\ReportEmployer::route('/report'),
         ];
     }
 }

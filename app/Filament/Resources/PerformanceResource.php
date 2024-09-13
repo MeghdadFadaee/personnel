@@ -16,7 +16,7 @@ use Filament\Tables\Table;
 class PerformanceResource extends BaseResource
 {
     protected static ?string $model = Performance::class;
-    protected static ?int $navigationSort = 7;
+    protected static string $navigationAfter = ProductivityResource::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 

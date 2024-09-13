@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\EmployerResource\Pages\ReportEmployer;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Models\Project;
 use Filament\Forms\Components\TextInput;
@@ -12,7 +13,7 @@ use Filament\Tables\Table;
 class ProjectResource extends BaseResource
 {
     protected static ?string $model = Project::class;
-    protected static ?int $navigationSort = 4;
+    protected static string $navigationAfter = ReportEmployer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
 
@@ -65,6 +66,7 @@ class ProjectResource extends BaseResource
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
+            'report' => Pages\ReportProject::route('/report'),
         ];
     }
 }

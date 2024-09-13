@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ProjectResource\Pages\ReportProject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\DateTimePicker;
@@ -17,7 +18,7 @@ use Filament\Tables\Table;
 class AttendanceResource extends BaseResource
 {
     protected static ?string $model = Attendance::class;
-    protected static ?int $navigationSort = 5;
+    protected static string $navigationAfter = ReportProject::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
