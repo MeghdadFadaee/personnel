@@ -47,8 +47,6 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
                 RegisterActivity::class,
-                ReportEmployer::class,
-                ReportProject::class,
             ])
             ->widgets([
                 Widgets\AccountWidget::class,

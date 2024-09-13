@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Tables\Columns\Summarizers;
 use Filament\Tables\Columns\TextColumn;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Number;
 
-class ReportProject extends BaseListRecords
+class ReportProject extends BaseListRecords implements HasForms
 {
     use InteractsWithForms;
 
@@ -139,5 +140,4 @@ class ReportProject extends BaseListRecords
     {
         $projects = $this->table->getQuery()->get();
         return Number::format($projects->sum('total_fee'), locale: config('app.locale'));
-    }
-}
+    }}

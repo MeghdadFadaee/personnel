@@ -7,8 +7,13 @@ use App\Filament\Resources\ProjectResource\Pages;
 use App\Models\Project;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Navigation\NavigationItem;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class ProjectResource extends BaseResource
 {
@@ -70,5 +75,23 @@ class ProjectResource extends BaseResource
             'edit' => Pages\EditProject::route('/{record}/edit'),
             'report' => Pages\ReportProject::route('/report'),
         ];
+    }
+
+    public static function getNavigationItems(): array
+    {
+        $selfItem = Arr::first(parent::getNavigationItems());
+
+        return [
+            $selfItem
+                ->isActiveWhen(fn() => self::activeWhen()),
+            ...Pages\ReportProject::getNavigationItems(),
+        ];
+    }
+
+    public static function activeWhen(): bool
+    {
+        $requestRoute = Str::of(request()->route()->getName());
+        $reportRoute = Pages\ReportProject::getRouteName();
+        return $requestRoute->contains(self::getRouteBaseName()) and !$requestRoute->is($reportRoute) ;
     }
 }

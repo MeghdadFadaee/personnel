@@ -8,6 +8,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class EmployerResource extends BaseResource
 {
@@ -52,5 +54,23 @@ class EmployerResource extends BaseResource
             'edit' => Pages\EditEmployer::route('/{record}/edit'),
             'report' => Pages\ReportEmployer::route('/report'),
         ];
+    }
+
+    public static function getNavigationItems(): array
+    {
+        $selfItem = Arr::first(parent::getNavigationItems());
+
+        return [
+            $selfItem
+                ->isActiveWhen(fn() => self::activeWhen()),
+            ...Pages\ReportEmployer::getNavigationItems(),
+        ];
+    }
+
+    public static function activeWhen(): bool
+    {
+        $requestRoute = Str::of(request()->route()->getName());
+        $reportRoute = Pages\ReportEmployer::getRouteName();
+        return $requestRoute->contains(self::getRouteBaseName()) and !$requestRoute->is($reportRoute) ;
     }
 }
