@@ -70,7 +70,7 @@ class ReportProject extends BaseListRecords
                 }
             };
 
-            return parent::getTableQuery()
+            return $this->table->getQuery()
                 ->withSum(['performances' => $relationFilter], 'completed_count');
         });
 
@@ -120,7 +120,7 @@ class ReportProject extends BaseListRecords
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))
-                            ->formatStateUsing(fn($state) => $this->getSumTotalFee())
+                            ->formatStateUsing(fn($state) => $this->getTotalFeeSum())
                     ])
                     ->prefix(trans('toman'))
                     ->sortable(false)
@@ -135,7 +135,7 @@ class ReportProject extends BaseListRecords
             ->modifyQueryUsing(fn(Builder $query) => $query->withSum('performances', 'completed_count'));
     }
 
-    public function getSumTotalFee(): string
+    public function getTotalFeeSum(): string
     {
         $projects = $this->table->getQuery()->get();
         return Number::format($projects->sum('total_fee'), locale: config('app.locale'));
