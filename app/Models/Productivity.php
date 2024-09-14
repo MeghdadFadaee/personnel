@@ -3,12 +3,17 @@
 namespace App\Models;
 
 use App\Casts\TimeCast;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * @property Carbon $duration
+ */
 class Productivity extends Model
 {
     use HasFactory, SoftDeletes;
@@ -23,12 +28,17 @@ class Productivity extends Model
         'day',
     ];
 
+    protected $appends = [
+        'duration'
+    ];
+
     protected function casts(): array
     {
         return [
             'day' => 'date',
             'started_at' => TimeCast::class,
             'finished_at' => TimeCast::class,
+            'leave_time' => TimeCast::class,
         ];
     }
 
@@ -50,5 +60,17 @@ class Productivity extends Model
     public function scopeForToday(Builder $builder): void
     {
         $builder->whereDate('day', today());
+    }
+
+    public function getDurationAttribute(): Carbon
+    {
+        $finish = Carbon::createFromTimeString($this->finished_at);
+        $started = Carbon::createFromTimeString($this->started_at);
+        $leave = Carbon::createFromTimeString($this->leave_time);
+        return $finish
+            ->subHours($started->hour)
+            ->subHours($leave->hour)
+            ->subMinutes($started->minute)
+            ->subMinutes($leave->minute);
     }
 }

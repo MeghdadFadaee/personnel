@@ -15,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Number;
 
 class ReportProject extends BaseListRecords implements HasForms
@@ -41,41 +42,19 @@ class ReportProject extends BaseListRecords implements HasForms
         return $form
             ->schema([
                 DatePicker::make('starts_at')
-                    ->afterStateUpdated(fn(?string $state) => $this->reloadTable())
+                    ->afterStateUpdated(fn(?string $state) => $this->loadTable())
                     ->columnSpan(1)
                     ->jalali()
                     ->live(),
 
                 DatePicker::make('ends_at')
-                    ->afterStateUpdated(fn(?string $state) => $this->reloadTable())
+                    ->afterStateUpdated(fn(?string $state) => $this->loadTable())
                     ->columnSpan(1)
                     ->jalali()
                     ->live(),
 
             ])
             ->columns(4);
-    }
-
-    public function reloadTable(): void
-    {
-
-        $this->table->modifyQueryUsing(function (Builder $query) {
-
-            $relationFilter = function (Builder $builder) {
-                if (isset($this->starts_at) and Carbon::canBeCreatedFromFormat($this->starts_at, 'Y-m-d H:i:s')) {
-                    $builder->whereDate('day', '>=', $this->starts_at);
-                }
-
-                if (isset($this->ends_at) and Carbon::canBeCreatedFromFormat($this->ends_at, 'Y-m-d H:i:s')) {
-                    $builder->whereDate('day', '<=', $this->ends_at);
-                }
-            };
-
-            return self::getResource()::getEloquentQuery()
-                ->withSum(['performances' => $relationFilter], 'completed_count');
-        });
-
-        $this->loadTable();
     }
 
     public function form(Form $form): Form
@@ -101,7 +80,7 @@ class ReportProject extends BaseListRecords implements HasForms
                     ->nullable()
                     ->default(0),
 
-                TextInput::make('total_fee')
+                TextInput::make('total_salaries')
                     ->prefix(trans('toman'))
                     ->readOnly()
                     ->default(0),
@@ -117,7 +96,7 @@ class ReportProject extends BaseListRecords implements HasForms
             ->columns([
                 ...$columns,
 
-                TextColumn::make('total_fee')
+                TextColumn::make('total_salaries')
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))
@@ -133,11 +112,20 @@ class ReportProject extends BaseListRecords implements HasForms
             ])
             ->actions([])
             ->toggleableAll()
-            ->modifyQueryUsing(fn(Builder $query) => $query->withSum('performances', 'completed_count'));
+            ->modifyQueryUsing(fn(Builder $query) => $this->modifyTableQuery($query));
+    }
+
+    public function modifyTableQuery(Builder $query): Builder
+    {
+        $query->withSum([
+            'performances' => fn($builder) => $this->dayFilter($builder)
+        ], 'completed_count');
+
+        return $query;
     }
 
     public function getTotalFeeSum(): string
     {
         $projects = $this->table->getQuery()->get();
-        return Number::format($projects->sum('total_fee'), locale: config('app.locale'));
+        return Number::format($projects->sum('total_salaries'), locale: config('app.locale'));
     }}
