@@ -91,8 +91,8 @@ class UserResource extends BaseResource
                 TextColumn::make('daily_duty'),
                 TextColumn::make('hourly_salary')
                     ->prefix(trans('toman')),
-                TextColumn::make('piece_salary')
-                    ->prefix(trans('toman')),
+//                TextColumn::make('piece_salary')
+//                    ->prefix(trans('toman')),
                 TextColumn::make('employers.title')->badge(),
                 TextColumn::make('projects.title')->badge(),
             ])
