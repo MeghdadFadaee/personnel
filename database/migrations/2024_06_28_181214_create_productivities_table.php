@@ -17,9 +17,9 @@ return new class extends Migration
             $table->integer('employer_id')->unsigned();
 
             $table->string('description')->nullable();
-            $table->time('started_at')->nullable();
-            $table->time('finished_at')->nullable();
-            $table->time('leave_time')->nullable();
+            $table->time('started_at')->default(0);
+            $table->time('finished_at')->default(0);
+            $table->time('leave_time')->default(0);
             $table->date('day');
             $table->timestamps();
             $table->softDeletes();
