@@ -5,8 +5,6 @@ namespace App\Providers\Filament;
 use App\Filament\Auth\EditMyProfile;
 use App\Filament\Auth\LoginByUsername;
 use App\Filament\Pages\RegisterActivity;
-use App\Filament\Resources\EmployerResource\Pages\ReportEmployer;
-use App\Filament\Resources\ProjectResource\Pages\ReportProject;
 use App\Http\Middleware\AttendanceLog;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -37,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->login(LoginByUsername::class)
             ->profile(EditMyProfile::class, isSimple: false)
             ->colors([
-                'primary' => Color::Sky,
+                'primary' => Color::Emerald,
             ])
             ->maxContentWidth(MaxWidth::Full)
             ->sidebarCollapsibleOnDesktop()
