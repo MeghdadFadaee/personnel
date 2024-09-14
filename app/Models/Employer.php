@@ -18,7 +18,11 @@ class Employer extends Model
     use HasFactory, softDeletes;
 
     protected $fillable = [
-        'title'
+        'title',
+    ];
+
+    protected $appends = [
+        'total_salaries',
     ];
 
     public function users(): BelongsToMany

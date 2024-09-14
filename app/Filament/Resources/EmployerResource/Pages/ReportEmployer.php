@@ -63,9 +63,15 @@ class ReportEmployer extends BaseListRecords implements HasForms
             ->schema([
                 TextInput::make('title')
                     ->required()
+                    ->columnSpan(2)
                     ->maxLength(255),
 
                 TextInput::make('total_work_duration')
+                    ->readOnly(),
+
+                TextInput::make('total_salaries')
+                    ->prefix(trans('toman'))
+                    ->default(0)
                     ->readOnly(),
             ]);
     }
@@ -85,7 +91,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))
-                            ->formatStateUsing(fn($state) => $this->getTotalWorkDurationSum())
+                            ->formatStateUsing(fn($state) => $this->getTotalWorkDurationSum()),
                     ])
                     ->copyable(),
 
@@ -94,7 +100,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))
-                            ->formatStateUsing(fn($state) => $this->getTotalSalariesSum())
+                            ->formatStateUsing(fn($state) => $this->getTotalSalariesSum()),
                     ])
                     ->prefix(trans('toman'))
                     ->sortable(false)
@@ -108,18 +114,17 @@ class ReportEmployer extends BaseListRecords implements HasForms
 
     public function modifyTableQuery(Builder $query): Builder
     {
-        $relation = [
+        $query->with('users');
+        $query->with([
+            'productivities' => fn($builder) => $this->dayFilter($builder),
+        ]);
+
+        $query->withSum([
             "productivities AS total_work_duration" => function (Builder $builder) {
                 $builder->select(DB::raw('SEC_TO_TIME(SUM(TIME_TO_SEC(finished_at) - TIME_TO_SEC(started_at) - TIME_TO_SEC(leave_time)))'));
                 $this->dayFilter($builder);
-            }
-        ];
-
-        $query->with('users');
-        $query->with([
-            'productivities' => fn($builder) => $this->dayFilter($builder)
-        ]);
-        $query->withSum($relation, 'total_work_duration');
+            },
+        ], 'total_work_duration');
 
         return $query;
     }
@@ -133,6 +138,14 @@ class ReportEmployer extends BaseListRecords implements HasForms
     public function getTotalWorkDurationSum(): string
     {
         $projects = $this->table->getQuery()->get();
-        return $projects->sum('total_salaries');
+
+        $totalDuration = Carbon::createFromTime();
+        foreach ($projects as $project) {
+            if (!empty($project->total_work_duration)) {
+                $duration = Carbon::createFromTimeString($project->total_work_duration);
+                $totalDuration->addHours($duration->hour)->addMinutes($duration->minute);
+            }
+        }
+        return $totalDuration->diff('00:00:00')->forHumans();
     }
 }
