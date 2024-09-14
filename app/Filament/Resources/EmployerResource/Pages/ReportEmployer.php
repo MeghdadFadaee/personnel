@@ -15,6 +15,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Filament\Tables\Columns\Summarizers;
+use Illuminate\Support\Number;
 
 class ReportEmployer extends BaseListRecords implements HasForms
 {
@@ -80,10 +82,20 @@ class ReportEmployer extends BaseListRecords implements HasForms
                 TextColumn::make('total_work_duration')
                     ->time()
                     ->tooltip(fn($state) => Carbon::make($state)?->diff('00:00:00')->forHumans())
+                    ->summarize([
+                        Summarizers\Summarizer::make()
+                            ->label(trans('Sum'))
+                            ->formatStateUsing(fn($state) => $this->getTotalWorkDurationSum())
+                    ])
                     ->copyable(),
 
 
                 TextColumn::make('total_salaries')
+                    ->summarize([
+                        Summarizers\Summarizer::make()
+                            ->label(trans('Sum'))
+                            ->formatStateUsing(fn($state) => $this->getTotalSalariesSum())
+                    ])
                     ->prefix(trans('toman'))
                     ->sortable(false)
                     ->copyable()
@@ -110,5 +122,17 @@ class ReportEmployer extends BaseListRecords implements HasForms
         $query->withSum($relation, 'total_work_duration');
 
         return $query;
+    }
+
+    public function getTotalSalariesSum(): string
+    {
+        $projects = $this->table->getQuery()->get();
+        return Number::format($projects->sum('total_salaries'), locale: config('app.locale'));
+    }
+
+    public function getTotalWorkDurationSum(): string
+    {
+        $projects = $this->table->getQuery()->get();
+        return $projects->sum('total_salaries');
     }
 }

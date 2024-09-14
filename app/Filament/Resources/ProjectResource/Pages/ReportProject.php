@@ -4,7 +4,6 @@ namespace App\Filament\Resources\ProjectResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\ProjectResource;
-use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -15,7 +14,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Number;
 
 class ReportProject extends BaseListRecords implements HasForms
@@ -100,7 +98,7 @@ class ReportProject extends BaseListRecords implements HasForms
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))
-                            ->formatStateUsing(fn($state) => $this->getTotalFeeSum())
+                            ->formatStateUsing(fn($state) => $this->getTotalSalariesSum())
                     ])
                     ->prefix(trans('toman'))
                     ->sortable(false)
@@ -124,8 +122,9 @@ class ReportProject extends BaseListRecords implements HasForms
         return $query;
     }
 
-    public function getTotalFeeSum(): string
+    public function getTotalSalariesSum(): string
     {
         $projects = $this->table->getQuery()->get();
         return Number::format($projects->sum('total_salaries'), locale: config('app.locale'));
-    }}
+    }
+}
