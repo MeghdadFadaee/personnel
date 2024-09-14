@@ -86,26 +86,28 @@ class ReportEmployer extends BaseListRecords implements HasForms
                 ...$columns,
 
                 TextColumn::make('total_work_duration')
-                    ->time()
-                    ->tooltip(fn($state) => Carbon::make($state)?->diff('00:00:00')->forHumans())
+                    ->copyable()
+                    ->formatStateUsing(fn($state
+                    ) => Carbon::createFromTime()->addSeconds((int) $state)->format('H:i:s'))
+                    ->tooltip(fn($state
+                    ) => Carbon::createFromTime()->addSeconds((int) $state)->diff('00:00:00')->forHumans())
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))
                             ->formatStateUsing(fn($state) => $this->getTotalWorkDurationSum()),
-                    ])
-                    ->copyable(),
+                    ]),
 
 
                 TextColumn::make('total_salaries')
+                    ->numeric()
+                    ->copyable()
+                    ->sortable(false)
+                    ->prefix(trans('toman'))
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))
                             ->formatStateUsing(fn($state) => $this->getTotalSalariesSum()),
-                    ])
-                    ->prefix(trans('toman'))
-                    ->sortable(false)
-                    ->copyable()
-                    ->numeric(),
+                    ]),
             ])
             ->actions([])
             ->toggleableAll()
@@ -121,7 +123,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
 
         $query->withSum([
             "productivities AS total_work_duration" => function (Builder $builder) {
-                $builder->select(DB::raw('SEC_TO_TIME(SUM(TIME_TO_SEC(finished_at) - TIME_TO_SEC(started_at) - TIME_TO_SEC(leave_time)))'));
+                $builder->select(DB::raw('SUM(TIME_TO_SEC(finished_at) - TIME_TO_SEC(started_at) - TIME_TO_SEC(leave_time))'));
                 $this->dayFilter($builder);
             },
         ], 'total_work_duration');
@@ -142,8 +144,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
         $totalDuration = Carbon::createFromTime();
         foreach ($projects as $project) {
             if (!empty($project->total_work_duration)) {
-                $duration = Carbon::createFromTimeString($project->total_work_duration);
-                $totalDuration->addHours($duration->hour)->addMinutes($duration->minute);
+                $totalDuration->addSeconds((int) $project->total_work_duration);
             }
         }
         return $totalDuration->diff('00:00:00')->forHumans();
