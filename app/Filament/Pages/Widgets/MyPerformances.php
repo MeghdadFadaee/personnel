@@ -23,6 +23,11 @@ class MyPerformances extends TableWidget
 
     protected static ?int $sort = 2;
 
+    protected function getTableHeading(): string|Htmlable|null
+    {
+        return trans('My Performances');
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -32,37 +37,10 @@ class MyPerformances extends TableWidget
             ->pluralModelLabel(trans('performances'))
             ->columns([
                 TextColumn::make('project.title'),
-                TextInputColumn::make('completed_count')
-                    ->rules([
-                        'integer',
-                        function (string $attribute, $value, Closure $fail, Validator $validator) {
-                            $id = Arr::get(request()->request->all(), 'components.0.calls.0.params.1');
-                            $performance = $this->getTableQuery()
-                                ->find($id);
-
-                            if ($performance->project->amount < $value) {
-                                $fail('validation.lte.numeric')->translate(['value' => $performance->project->amount]);
-                            }
-                        },
-                    ])
-                    ->summarize([
-                        Summarizers\Sum::make(),
-                    ]),
+                $this->getCompletedCountComponent(),
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()
-                    ->form([
-                        Select::make('project')
-                            ->options(auth()->user()->projects()->pluck('title', 'id'))
-                            ->preload(),
-                    ])
-                    ->action(function (array $data) {
-                        Performance::create([
-                            'user_id' => auth()->id(),
-                            'project_id' => $data['project'],
-                            'day' => today(),
-                        ]);
-                    }),
+                $this->getHeaderAction(),
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()->iconButton(),
@@ -75,8 +53,41 @@ class MyPerformances extends TableWidget
 
     }
 
-    protected function getTableHeading(): string|Htmlable|null
+    protected function getCompletedCountComponent(): TextInputColumn
     {
-        return trans('My Performances');
+        return TextInputColumn::make('completed_count')
+            ->rules([
+                'integer',
+                function (string $attribute, $value, Closure $fail, Validator $validator) {
+                    $id = Arr::get(request()->request->all(), 'components.0.calls.0.params.1');
+                    $performance = $this->getTableQuery()
+                        ->find($id);
+
+                    $ability = $performance->completed_count + $performance->project->amount - $performance->project->amount_done;
+                    if ($ability < $value) {
+                        $fail('validation.lte.numeric')->translate(['value' => $ability]);
+                    }
+                },
+            ])
+            ->summarize([
+                Summarizers\Sum::make(),
+            ]);
+    }
+
+    protected function getHeaderAction(): Tables\Actions\AttachAction
+    {
+        return Tables\Actions\AttachAction::make()
+            ->form([
+                Select::make('project')
+                    ->options(auth()->user()->projects()->hasRemaining()->pluck('title', 'id'))
+                    ->preload(),
+            ])
+            ->action(function (array $data) {
+                Performance::create([
+                    'user_id' => auth()->id(),
+                    'project_id' => $data['project'],
+                    'day' => today(),
+                ]);
+            });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,6 +20,10 @@ class Project extends Model
         'day',
     ];
 
+    protected $appends = [
+        'amount_done',
+    ];
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
@@ -32,5 +37,21 @@ class Project extends Model
     public function getTotalSalariesAttribute(): float|int
     {
         return ((int) $this->fee) * ((int) $this->performances_sum_completed_count);
+    }
+
+    public function getAmountDoneAttribute(): int
+    {
+        return $this->performances()->sum('completed_count');
+    }
+
+    public function scopeHasRemaining(Builder $query): void
+    {
+        $query->where(function (Builder $query) {
+            $query->doesntHave('performances');
+            $query->orWhereHas('performances', function (Builder $subQuery) {
+                $subQuery->selectRaw('SUM(completed_count) as total_completed');
+                $subQuery->havingRaw('total_completed < projects.amount');
+            });
+        });
     }
 }

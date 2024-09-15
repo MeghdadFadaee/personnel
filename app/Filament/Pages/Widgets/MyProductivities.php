@@ -26,6 +26,11 @@ class MyProductivities extends TableWidget
 
     protected static ?int $sort = 2;
 
+    protected function getTableHeading(): string|Htmlable|null
+    {
+        return trans('My Productivities');
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -35,101 +40,12 @@ class MyProductivities extends TableWidget
             ->pluralModelLabel(trans('productivities'))
             ->columns([
                 TextColumn::make('employer.title'),
-                TextInputColumn::make('started_at')
-                    ->time()
-                    ->rules([
-                        'date_format:H:i',
-                        function (string $attribute, $value, Closure $fail, Validator $validator) {
-                            try {
-                                $start = Carbon::parse($value);
-                            } catch (\Carbon\Exceptions\InvalidFormatException $exception) {
-                                return;
-                            }
-
-                            $id = Arr::get(request()->request->all(), 'components.0.calls.0.params.1');
-                            $productivities = $this->getTableQuery()
-                                ->where('id', '<', $id)
-                                ->get();
-
-                            foreach ($productivities as $productivity) {
-                                $finish = Carbon::parse($productivity->finished_at);
-                                if ($start->isBefore($finish)) {
-                                    $fail('validation.custom.started_at.after')->translate();
-                                    return;
-                                }
-                            }
-                        },
-                    ]),
-                TextInputColumn::make('finished_at')
-                    ->time()
-                    ->rules([
-                        'date_format:H:i',
-                        function (string $attribute, $value, Closure $fail, Validator $validator) {
-                            try {
-                                $finish = Carbon::parse($value);
-                            } catch (\Carbon\Exceptions\InvalidFormatException $exception) {
-                                return;
-                            }
-
-                            $id = Arr::get(request()->request->all(), 'components.0.calls.0.params.1');
-                            $model = Productivity::query()->find($id);
-
-                            $start = Carbon::parse($model->started_at);
-
-                            if ($finish->isBefore($start)) {
-                                $fail('validation.custom.finished_at.after')->translate();
-                            }
-
-                            $productivities = $this->getTableQuery()
-                                ->where('id', '>', $id)
-                                ->get();
-
-                            foreach ($productivities as $productivity) {
-                                $otherStart = Carbon::parse($productivity->started_at);
-                                if ($finish->isAfter($otherStart)) {
-                                    $fail('validation.custom.finished_at.before')->translate();
-                                    return;
-                                }
-                            }
-                        },
-                    ]),
-                TextInputColumn::make('description')
-                    ->summarize([
-                        Summarizers\Sum::make()
-                            ->formatStateUsing(function ($state) {
-                                $starts = Carbon::parse('00:00:00');
-                                $finishes = Carbon::parse('00:00:00');
-                                $productivities = $this->getTableQuery()->get();
-                                foreach ($productivities as $productivity) {
-                                    if (!empty($productivity->started_at)) {
-                                        $start = explode(':', $productivity->started_at);
-                                        $starts->addHours((int) $start[0]);
-                                        $starts->addMinutes((int) $start[1]);
-                                    }
-                                    if (!empty($productivity->finished_at)) {
-                                        $finish = explode(':', $productivity->finished_at);
-                                        $finishes->addHours((int) $finish[0]);
-                                        $finishes->addMinutes((int) $finish[1]);
-                                    }
-                                }
-                                return $finishes->diff($starts)->forHumans();
-                            }),
-                    ]),
+                $this->getStartedAtComponent(),
+                $this->getFinishedAtComponent(),
+                $this->getDescriptionComponent(),
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()
-                    ->form([
-                        Select::make('employer')
-                            ->options(auth()->user()->employers()->pluck('title', 'id'))
-                            ->preload(),
-                    ])
-                    ->action(function (array $data) {
-                        Productivity::create([
-                            'user_id' => auth()->id(),
-                            'employer_id' => $data['employer'],
-                            'day' => today(),
-                        ]);
-                    }),
+                $this->getHeaderAction(),
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()->iconButton(),
@@ -142,8 +58,115 @@ class MyProductivities extends TableWidget
 
     }
 
-    protected function getTableHeading(): string|Htmlable|null
+    protected function getHeaderAction(): Tables\Actions\AttachAction
     {
-        return trans('My Productivities');
+        return Tables\Actions\AttachAction::make()
+            ->form([
+                Select::make('employer')
+                    ->options(auth()->user()->employers()->pluck('title', 'id'))
+                    ->preload(),
+            ])
+            ->action(function (array $data) {
+                Productivity::create([
+                    'user_id' => auth()->id(),
+                    'employer_id' => $data['employer'],
+                    'day' => today(),
+                ]);
+            });
     }
+
+    protected function getStartedAtComponent(): TextInputColumn
+    {
+        return TextInputColumn::make('started_at')
+            ->time()
+            ->rules([
+                'date_format:H:i',
+                function (string $attribute, $value, Closure $fail, Validator $validator) {
+                    try {
+                        $start = Carbon::parse($value);
+                    } catch (\Carbon\Exceptions\InvalidFormatException $exception) {
+                        return;
+                    }
+
+                    $id = Arr::get(request()->request->all(), 'components.0.calls.0.params.1');
+                    $productivities = $this->getTableQuery()
+                        ->where('id', '<', $id)
+                        ->get();
+
+                    foreach ($productivities as $productivity) {
+                        $finish = Carbon::parse($productivity->finished_at);
+                        if ($start->isBefore($finish)) {
+                            $fail('validation.custom.started_at.after')->translate();
+                            return;
+                        }
+                    }
+                },
+            ]);
+    }
+
+    protected function getFinishedAtComponent(): TextInputColumn
+    {
+        return TextInputColumn::make('finished_at')
+            ->time()
+            ->rules([
+                'date_format:H:i',
+                function (string $attribute, $value, Closure $fail, Validator $validator) {
+                    try {
+                        $finish = Carbon::parse($value);
+                    } catch (\Carbon\Exceptions\InvalidFormatException $exception) {
+                        return;
+                    }
+
+                    $id = Arr::get(request()->request->all(), 'components.0.calls.0.params.1');
+                    $model = Productivity::query()->find($id);
+
+                    $start = Carbon::parse($model->started_at);
+
+                    if ($finish->isBefore($start)) {
+                        $fail('validation.custom.finished_at.after')->translate();
+                        return;
+                    }
+
+                    $productivities = $this->getTableQuery()
+                        ->where('id', '>', $id)
+                        ->get();
+
+                    foreach ($productivities as $productivity) {
+                        $otherStart = Carbon::parse($productivity->started_at);
+                        if ($finish->isAfter($otherStart)) {
+                            $fail('validation.custom.finished_at.before')->translate();
+                            return;
+                        }
+                    }
+                },
+            ]);
+    }
+
+    private function getDescriptionComponent(): TextInputColumn
+    {
+        return TextInputColumn::make('description')
+            ->summarize([
+                Summarizers\Sum::make()
+                    ->formatStateUsing(function ($state) {
+                        $starts = Carbon::parse('00:00:00');
+                        $finishes = Carbon::parse('00:00:00');
+                        $productivities = $this->getTableQuery()->get();
+                        foreach ($productivities as $productivity) {
+                            if (!empty($productivity->started_at)) {
+                                $start = explode(':', $productivity->started_at);
+                                $starts->addHours((int) $start[0]);
+                                $starts->addMinutes((int) $start[1]);
+                            }
+                            if (!empty($productivity->finished_at)) {
+                                $finish = explode(':', $productivity->finished_at);
+                                $finishes->addHours((int) $finish[0]);
+                                $finishes->addMinutes((int) $finish[1]);
+                            }
+                        }
+                        return $finishes->diff($starts)->forHumans();
+                    }),
+            ]);
+    }
+
+
 }
