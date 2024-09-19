@@ -26,6 +26,7 @@ return new class extends Migration
             $table->time('exited_at')->nullable();
             $table->time('daily_duty')->nullable();
             $table->integer('hourly_salary')->nullable();
+            $table->integer('hourly_penalty')->nullable();
             $table->integer('piece_salary')->nullable();
 
             $table->rememberToken();

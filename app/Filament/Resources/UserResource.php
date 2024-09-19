@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Filament\Pages\Dashboard;
 use App\Filament\Auth\EditMyProfile;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Placeholder;
@@ -56,11 +59,11 @@ class UserResource extends BaseResource
                                     ->nullable()
                                     ->default(0),
 
-//                                TextInput::make('piece_salary')
-//                                    ->prefix(trans('toman'))
-//                                    ->integer()
-//                                    ->nullable()
-//                                    ->default(0),
+                                TextInput::make('hourly_penalty')
+                                    ->prefix(trans('toman'))
+                                    ->integer()
+                                    ->nullable()
+                                    ->default(0),
                             ]),
                         Tabs\Tab::make('Login information')
                             ->icon('heroicon-o-arrow-left-end-on-rectangle')
@@ -91,8 +94,8 @@ class UserResource extends BaseResource
                 TextColumn::make('daily_duty'),
                 TextColumn::make('hourly_salary')
                     ->prefix(trans('toman')),
-//                TextColumn::make('piece_salary')
-//                    ->prefix(trans('toman')),
+                TextColumn::make('hourly_penalty')
+                    ->prefix(trans('toman')),
                 TextColumn::make('employers.title')->badge(),
                 TextColumn::make('projects.title')->badge(),
             ])
@@ -113,6 +116,25 @@ class UserResource extends BaseResource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'report' => Pages\ReportUser::route('/report'),
         ];
+    }
+
+    public static function getNavigationItems(): array
+    {
+        $selfItem = Arr::first(parent::getNavigationItems());
+
+        return [
+            $selfItem
+                ->isActiveWhen(fn() => self::activeWhen()),
+            ...Pages\ReportUser::getNavigationItems(),
+        ];
+    }
+
+    public static function activeWhen(): bool
+    {
+        $requestRoute = Str::of(request()->route()->getName());
+        $reportRoute = Pages\ReportUser::getRouteName();
+        return $requestRoute->contains(self::getRouteBaseName()) and !$requestRoute->is($reportRoute) ;
     }
 }

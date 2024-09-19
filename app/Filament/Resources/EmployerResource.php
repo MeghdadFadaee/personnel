@@ -10,11 +10,12 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use App\Filament\Resources\UserResource\Pages\ReportUser;
 
 class EmployerResource extends BaseResource
 {
     protected static ?string $model = Employer::class;
-    protected static string $navigationAfter = UserResource::class;
+    protected static string $navigationAfter = ReportUser::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
