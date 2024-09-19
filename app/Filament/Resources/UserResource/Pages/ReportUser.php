@@ -78,8 +78,7 @@ class ReportUser extends BaseListRecords implements HasForms
                 TextColumn::make('full_name')
                     ->sortable(['first_name', 'last_name']),
 
-                TextColumn::make('total_attendance_duration')
-                    ->copyable()
+                $this->getDurationTextColumn('total_attendance_duration')
 
             ])
             ->actions([])
@@ -89,6 +88,13 @@ class ReportUser extends BaseListRecords implements HasForms
 
     public function modifyTableQuery(Builder $query): Builder
     {
+        $query->whereKey(1);
+        $query->withSum([
+            "attendances AS total_attendance_duration" => function (Builder $builder) {
+                $builder->select(DB::raw('SUM(TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at))'));
+                $this->dayFilter($builder);
+            },
+        ], 'total_attendance_duration');
 
         return $query;
     }

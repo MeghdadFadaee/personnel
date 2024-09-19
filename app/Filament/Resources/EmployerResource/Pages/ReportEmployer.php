@@ -85,14 +85,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
             ->columns([
                 ...$columns,
 
-                TextColumn::make('total_work_duration')
-                    ->copyable()
-                    ->formatStateUsing(
-                        fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->format('H:i:s')
-                    )
-                    ->tooltip(
-                        fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->diff('00:00:00')->forHumans()
-                    )
+                $this->getDurationTextColumn('total_work_duration')
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))

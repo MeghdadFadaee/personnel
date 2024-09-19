@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Tables\Columns\TextColumn;
 use App\Filament\Resources\BaseResource;
 use Carbon\Carbon;
 use Filament\Resources\Pages\ListRecords;
@@ -64,4 +65,15 @@ abstract class BaseListRecords extends ListRecords
         return $query;
     }
 
+    public function getDurationTextColumn(string $name): TextColumn
+    {
+        return TextColumn::make($name)
+            ->copyable()
+            ->formatStateUsing(
+                fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->format('H:i:s')
+            )
+            ->tooltip(
+                fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->diff('00:00:00')->forHumans()
+            );
+    }
 }
