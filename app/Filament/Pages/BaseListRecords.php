@@ -70,7 +70,7 @@ abstract class BaseListRecords extends ListRecords
         return TextColumn::make($name)
             ->copyable()
             ->formatStateUsing(
-                fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->format('H:i:s')
+                fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->format('H:i:s') // TODO: handel time before 0
             )
             ->tooltip(
                 fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->diff('00:00:00')->forHumans()
