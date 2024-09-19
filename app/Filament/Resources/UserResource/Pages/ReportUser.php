@@ -4,8 +4,6 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\UserResource;
-use App\Filament\Resources\EmployerResource;
-use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -14,10 +12,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Filament\Tables\Columns\Summarizers;
-use Illuminate\Support\Number;
 
 class ReportUser extends BaseListRecords implements HasForms
 {
@@ -78,7 +73,12 @@ class ReportUser extends BaseListRecords implements HasForms
                 TextColumn::make('full_name')
                     ->sortable(['first_name', 'last_name']),
 
-                $this->getDurationTextColumn('total_attendance_duration')
+                $this->getDurationTextColumn('total_attendance_duration'),
+                $this->getDurationTextColumn('total_delay_duration'),
+                $this->getDurationTextColumn('total_worked_duration'),
+                $this->getDurationTextColumn('total_worked_all_duration'),
+                $this->getDurationTextColumn('total_vacation_duration'),
+                $this->getDurationTextColumn('total_reduce_daily_duty_duration'),
 
             ])
             ->actions([])
@@ -89,13 +89,52 @@ class ReportUser extends BaseListRecords implements HasForms
     public function modifyTableQuery(Builder $query): Builder
     {
         $query->whereKey(1);
-        $query->withSum([
-            "attendances AS total_attendance_duration" => function (Builder $builder) {
-                $builder->select(DB::raw('SUM(TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at))'));
-                $this->dayFilter($builder);
-            },
-        ], 'total_attendance_duration');
+        $this->withAttendancesSum(
+            $query,
+            'total_attendance_duration',
+            'TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at)',
+        );
+
+        $this->withAttendancesSum(
+            $query,
+            'total_delay_duration',
+            'TIME_TO_SEC(entered_at) - TIME_TO_SEC(users.entered_at)',
+        );
+
+        $this->withAttendancesSum(
+            $query,
+            'total_worked_duration',
+            'TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at) - TIME_TO_SEC(reduce)',
+        );
+
+        $this->withAttendancesSum(
+            $query,
+            'total_worked_all_duration',
+            'TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at) - TIME_TO_SEC(reduce) - TIME_TO_SEC(vacation) + TIME_TO_SEC(home_work)',
+        );
+
+        $this->withAttendancesSum(
+            $query,
+            'total_vacation_duration',
+            'TIME_TO_SEC(vacation)',
+        );
+
+        $this->withAttendancesSum(
+            $query,
+            'total_reduce_daily_duty_duration',
+            'TIME_TO_SEC(users.daily_duty) - (TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at) + TIME_TO_SEC(home_work)) - TIME_TO_SEC(reduce) + TIME_TO_SEC(vacation)',
+        );
 
         return $query;
+    }
+
+    public function withAttendancesSum(Builder &$query, string $AS, string $row): void
+    {
+        $query->withSum([
+            "attendances AS $AS" => function (Builder $builder) use ($row){
+                $builder->select(DB::raw("SUM($row)"));
+                $this->dayFilter($builder);
+            },
+        ], $AS);
     }
 }
