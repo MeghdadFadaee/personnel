@@ -22,12 +22,12 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
 
-            $table->time('entered_at')->nullable();
-            $table->time('exited_at')->nullable();
-            $table->time('daily_duty')->nullable();
-            $table->integer('hourly_salary')->nullable();
-            $table->integer('hourly_penalty')->nullable();
-            $table->integer('piece_salary')->nullable();
+            $table->time('entered_at')->default(0);
+            $table->time('exited_at')->default(0);
+            $table->time('daily_duty')->default(0);
+            $table->integer('hourly_salary')->default(0);
+            $table->integer('hourly_penalty')->default(0);
+            $table->integer('piece_salary')->default(0);
 
             $table->rememberToken();
             $table->timestamps();

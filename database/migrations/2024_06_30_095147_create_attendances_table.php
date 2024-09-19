@@ -15,11 +15,11 @@ return new class extends Migration {
             $table->id();
             $table->integer('user_id')->unsigned();
 
-            $table->time('entered_at')->nullable();
-            $table->time('exited_at')->nullable();
-            $table->time('reduce')->nullable();
-            $table->time('vacation')->nullable();
-            $table->time('home_work')->nullable();
+            $table->time('entered_at')->default(0);
+            $table->time('exited_at')->default(0);
+            $table->time('reduce')->default(0);
+            $table->time('vacation')->default(0);
+            $table->time('home_work')->default(0);
             $table->date('day')->default(DB::raw('CURRENT_DATE'));
             $table->timestamps();
             $table->softDeletes();
