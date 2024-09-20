@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\UserResource;
+use App\Traits\PageWithFilterForm;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 class ReportUser extends BaseListRecords implements HasForms
 {
     use InteractsWithForms;
+    use PageWithFilterForm;
 
     protected static string $resource = UserResource::class;
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
@@ -28,29 +30,6 @@ class ReportUser extends BaseListRecords implements HasForms
             'form',
             'filterForm',
         ];
-    }
-
-    public string $starts_at;
-    public string $ends_at;
-
-    public function filterForm(Form $form): Form
-    {
-        return $form
-            ->schema([
-                DatePicker::make('starts_at')
-                    ->afterStateUpdated(fn(?string $state) => $this->loadTable())
-                    ->columnSpan(1)
-                    ->jalali()
-                    ->live(),
-
-                DatePicker::make('ends_at')
-                    ->afterStateUpdated(fn(?string $state) => $this->loadTable())
-                    ->columnSpan(1)
-                    ->jalali()
-                    ->live(),
-
-            ])
-            ->columns(4);
     }
 
     public function form(Form $form): Form
