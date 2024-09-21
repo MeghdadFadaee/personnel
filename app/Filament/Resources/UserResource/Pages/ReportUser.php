@@ -5,6 +5,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\UserResource;
 use App\Traits\PageWithDayFilter;
+use Carbon\Carbon;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -140,6 +141,23 @@ class ReportUser extends BaseListRecords implements HasForms
                 $this->dayFilter($builder);
             },
         ], $AS);
+    }
+
+    public function getDurationTextColumn(string $name, ?string $label = null, ?string $color = null): TextColumn
+    {
+        return TextColumn::make($name)
+            ->label(empty($label) ? $name : $label)
+            ->color($color)
+            ->copyable()
+            ->formatStateUsing(fn($state) => match (true) {
+                $state > 0 => Carbon::createFromTime()->addSeconds((int) $state)->format('H:i:s'),
+                $state < 0 => Carbon::createFromTime()->subSeconds((int) $state)->format('H:i:s'),
+                default => null,
+            })
+            ->tooltip(fn($state) => Carbon::createFromTime()
+                ->addSeconds((int) $state)
+                ->diff('00:00:00')
+                ->forHumans());
     }
 
     public function getTomanTextColumn(string $name, ?string $label = null, ?string $color = null): TextColumn

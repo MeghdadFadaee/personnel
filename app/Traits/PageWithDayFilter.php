@@ -45,30 +45,4 @@ trait PageWithDayFilter
         }
         return $query;
     }
-
-    public function getDurationTextColumn(string $name, ?string $label = null, ?string $color = null): TextColumn
-    {
-        return TextColumn::make($name)
-            ->label(empty($label) ? $name : $label)
-            ->color($color)
-            ->copyable()
-            ->formatStateUsing(
-                fn($state) => $this->getFormatedDuration((int) $state)
-            )
-            ->tooltip(
-                fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->diff('00:00:00')->forHumans()
-            );
-    }
-
-    public function getFormatedDuration(int $seconds): ?string
-    {
-        if ($seconds > 0) {
-            return Carbon::createFromTime()->addSeconds($seconds)->format('H:i:s');
-        }
-        if ($seconds < 0) {
-            return Carbon::createFromTime()->subSeconds($seconds)->format('H:i:s');
-        }
-        return null;
-    }
-
 }
