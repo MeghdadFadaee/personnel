@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\SalaryCalculator;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
@@ -21,6 +22,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasFactory, SoftDeletes, Notifiable;
+    use SalaryCalculator;
 
     public const ROLE_ADMIN = 'admin';
     public const ROLE_USER = 'user';
@@ -81,6 +83,16 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class);
+    }
+
+    public function productivity(): HasMany
+    {
+        return $this->hasMany(Productivity::class);
+    }
+
+    public function performance(): HasMany
+    {
+        return $this->hasMany(Performance::class);
     }
 
     public function isAdmin(): bool

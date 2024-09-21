@@ -51,13 +51,20 @@ class ReportUser extends BaseListRecords implements HasForms
                 TextColumn::make('full_name')
                     ->sortable(['first_name', 'last_name']),
 
-                $this->getDurationTextColumn('total_attendance_duration'),
-                $this->getDurationTextColumn('total_delay_duration'),
-                $this->getDurationTextColumn('total_worked_duration'),
-                $this->getDurationTextColumn('total_worked_all_duration'),
-                $this->getDurationTextColumn('total_vacation_duration'),
-                $this->getDurationTextColumn('total_reduce_daily_duty_duration'),
+                $this->getDurationTextColumn('total_attendance_duration', 'حضور', 'success'),
+                $this->getDurationTextColumn('total_delay_duration', 'تاخیر', 'info'),
+                $this->getDurationTextColumn('total_worked_duration', 'جمع کار کرد', 'success'),
+                $this->getDurationTextColumn('total_worked_all_duration', 'جمع کار کرد کل', 'success'),
+                $this->getDurationTextColumn('total_reduce_duration', 'کسر روزانه', 'info'),
+                $this->getDurationTextColumn('total_reduce_daily_duty_duration', 'کسر موظفی', 'danger'),
+                $this->getDurationTextColumn('total_home_work_duration', 'کار در منزل', 'info'),
+                $this->getDurationTextColumn('total_overtime_duration', 'اضافه کاری', 'info'),
+                $this->getDurationTextColumn('total_vacation_duration', 'مرخصی', 'danger'),
 
+                $this->getTomanTextColumn('total_hourly_salaries', 'حق الزحمه ساعتی', 'success'),
+                $this->getTomanTextColumn('total_project_salaries', 'حق الزحمه پروژه‌ای', 'success'),
+                $this->getTomanTextColumn('total_hourly_penalties', 'جریمه', 'danger'),
+                $this->getTomanTextColumn('total_salaries', 'جمع کارکرد', 'success'),
             ])
             ->actions([])
             ->toggleableAll()
@@ -93,8 +100,8 @@ class ReportUser extends BaseListRecords implements HasForms
 
         $this->withAttendancesSum(
             $query,
-            'total_vacation_duration',
-            'TIME_TO_SEC(vacation)',
+            'total_reduce_duration',
+            'TIME_TO_SEC(reduce)',
         );
 
         $this->withAttendancesSum(
@@ -103,16 +110,45 @@ class ReportUser extends BaseListRecords implements HasForms
             'TIME_TO_SEC(users.daily_duty) - (TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at) + TIME_TO_SEC(home_work)) - TIME_TO_SEC(reduce) + TIME_TO_SEC(vacation)',
         );
 
+        $this->withAttendancesSum(
+            $query,
+            'total_home_work_duration',
+            'TIME_TO_SEC(home_work)',
+        );
+
+        $this->withAttendancesSum(
+            $query,
+            'total_overtime_duration',
+            '(TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at) - TIME_TO_SEC(reduce) - TIME_TO_SEC(vacation) + TIME_TO_SEC(home_work)) - TIME_TO_SEC(users.daily_duty)',
+        );
+
+        $this->withAttendancesSum(
+            $query,
+            'total_vacation_duration',
+            'TIME_TO_SEC(vacation)',
+        );
+
         return $query;
     }
 
     public function withAttendancesSum(Builder &$query, string $AS, string $row): void
     {
         $query->withSum([
-            "attendances AS $AS" => function (Builder $builder) use ($row){
+            "attendances AS $AS" => function (Builder $builder) use ($row) {
                 $builder->select(DB::raw("SUM($row)"));
                 $this->dayFilter($builder);
             },
         ], $AS);
+    }
+
+    public function getTomanTextColumn(string $name, ?string $label = null, ?string $color = null): TextColumn
+    {
+        return TextColumn::make($name)
+            ->label(empty($label) ? $name : $label)
+            ->color($color)
+            ->prefix(trans('toman'))
+            ->sortable(false)
+            ->copyable()
+            ->numeric();
     }
 }

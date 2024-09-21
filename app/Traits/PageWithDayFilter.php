@@ -46,10 +46,11 @@ trait PageWithDayFilter
         return $query;
     }
 
-    public function getDurationTextColumn(string $name, ?string $label = null): TextColumn
+    public function getDurationTextColumn(string $name, ?string $label = null, ?string $color = null): TextColumn
     {
         return TextColumn::make($name)
             ->label(empty($label) ? $name : $label)
+            ->color($color)
             ->copyable()
             ->formatStateUsing(
                 fn($state) => $this->getFormatedDuration((int) $state)
