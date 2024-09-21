@@ -9,9 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -70,12 +68,6 @@ class ReportUser extends BaseListRecords implements HasForms
             ])
             ->actions([])
             ->toggleableAll()
-            ->actions([
-                Action::make(trans('View'))
-                    ->icon('heroicon-m-hashtag')
-                    ->iconButton()
-                    ->url(fn($record) => route('filament.admin.resources.users.report.detail', $record), true),
-            ], position: ActionsPosition::BeforeColumns)
             ->recordUrl(fn($record) => route('filament.admin.resources.users.report.detail', $record), true)
             ->modifyQueryUsing(fn(Builder $query) => $this->modifyTableQuery($query));
     }
