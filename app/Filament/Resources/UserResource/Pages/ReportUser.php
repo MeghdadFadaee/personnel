@@ -4,8 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\UserResource;
-use App\Traits\PageWithFilterForm;
-use Filament\Forms\Components\DatePicker;
+use App\Traits\PageWithDayFilter;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -18,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 class ReportUser extends BaseListRecords implements HasForms
 {
     use InteractsWithForms;
-    use PageWithFilterForm;
+    use PageWithDayFilter;
 
     protected static string $resource = UserResource::class;
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';

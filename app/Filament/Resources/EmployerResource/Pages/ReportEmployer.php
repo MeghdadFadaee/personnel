@@ -4,9 +4,8 @@ namespace App\Filament\Resources\EmployerResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\EmployerResource;
-use App\Traits\PageWithFilterForm;
+use App\Traits\PageWithDayFilter;
 use Carbon\Carbon;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -22,7 +21,7 @@ use Illuminate\Support\Number;
 class ReportEmployer extends BaseListRecords implements HasForms
 {
     use InteractsWithForms;
-    use PageWithFilterForm;
+    use PageWithDayFilter;
 
     protected static string $resource = EmployerResource::class;
     protected static ?string $navigationIcon = 'heroicon-o-chart-pie';

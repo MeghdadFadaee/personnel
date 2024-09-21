@@ -4,7 +4,7 @@ namespace App\Filament\Resources\ProjectResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\ProjectResource;
-use App\Traits\PageWithFilterForm;
+use App\Traits\PageWithDayFilter;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -19,7 +19,7 @@ use Illuminate\Support\Number;
 class ReportProject extends BaseListRecords implements HasForms
 {
     use InteractsWithForms;
-    use PageWithFilterForm;
+    use PageWithDayFilter;
 
     protected static string $resource = ProjectResource::class;
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';

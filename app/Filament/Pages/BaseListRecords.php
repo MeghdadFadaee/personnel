@@ -2,13 +2,9 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Tables\Columns\TextColumn;
 use App\Filament\Resources\BaseResource;
-use Carbon\Carbon;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use function Filament\Support\get_model_label;
 
@@ -52,28 +48,5 @@ abstract class BaseListRecords extends ListRecords
     public function getBreadcrumb(): ?string
     {
         return Str::replace($this->getPluralModelLabel(), '', static::getNavigationLabel());
-    }
-
-    public function dayFilter(Builder|HasMany &$query): Builder|HasMany
-    {
-        if (isset($this->starts_at) and Carbon::canBeCreatedFromFormat($this->starts_at, 'Y-m-d H:i:s')) {
-            $query->whereDate('day', '>=', $this->starts_at);
-        }
-        if (isset($this->ends_at) and Carbon::canBeCreatedFromFormat($this->ends_at, 'Y-m-d H:i:s')) {
-            $query->whereDate('day', '<=', $this->ends_at);
-        }
-        return $query;
-    }
-
-    public function getDurationTextColumn(string $name): TextColumn
-    {
-        return TextColumn::make($name)
-            ->copyable()
-            ->formatStateUsing(
-                fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->format('H:i:s') // TODO: handel time before 0
-            )
-            ->tooltip(
-                fn($state) => Carbon::createFromTime()->addSeconds((int) $state)->diff('00:00:00')->forHumans()
-            );
     }
 }
