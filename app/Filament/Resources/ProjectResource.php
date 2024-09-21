@@ -48,7 +48,7 @@ class ProjectResource extends BaseResource
                     ->numeric(),
 
                 TextColumn::make('fee')
-                    ->prefix(trans('toman'))
+                    ->suffix(' '.trans('toman'))
                     ->numeric(),
 
                 TextColumn::make('users.full_name')->badge(),

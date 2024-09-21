@@ -14,6 +14,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Filament\Tables\Columns\Summarizers;
+use Illuminate\Support\Number;
 
 class ReportUser extends BaseListRecords implements HasForms
 {
@@ -157,7 +159,22 @@ class ReportUser extends BaseListRecords implements HasForms
             ->tooltip(fn($state) => Carbon::createFromTime()
                 ->addSeconds((int) $state)
                 ->diff('00:00:00')
-                ->forHumans());
+                ->forHumans()
+            )
+            ->summarize([
+                Summarizers\Summarizer::make()
+                    ->label(trans('Sum'))
+                    ->formatStateUsing(fn($state) => Carbon::createFromTime()
+                        ->addSeconds(
+                            $this->table
+                                ->getQuery()
+                                ->get()
+                                ->sum($name)
+                        )
+                        ->diff('00:00:00')
+                        ->forHumans())
+            ])
+            ->copyable();
     }
 
     public function getTomanTextColumn(string $name, ?string $label = null, ?string $color = null): TextColumn
@@ -165,9 +182,21 @@ class ReportUser extends BaseListRecords implements HasForms
         return TextColumn::make($name)
             ->label(empty($label) ? $name : $label)
             ->color($color)
-            ->prefix(trans('toman'))
+            ->suffix(' '.trans('toman'))
             ->sortable(false)
             ->copyable()
+            ->summarize([
+                Summarizers\Summarizer::make()
+                    ->label(trans('Sum'))
+                    ->formatStateUsing(fn($state) => Number::format(
+                            $this->table
+                                ->getQuery()
+                                ->get()
+                                ->sum($name),
+                            locale: config('app.locale')
+                        ).' تومان'
+                    ),
+            ])
             ->numeric();
     }
 }

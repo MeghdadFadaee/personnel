@@ -78,7 +78,7 @@ class ReportProject extends BaseListRecords implements HasForms
                             ->label(trans('Sum'))
                             ->formatStateUsing(fn($state) => $this->getTotalSalariesSum())
                     ])
-                    ->prefix(trans('toman'))
+                    ->suffix(' '.trans('toman'))
                     ->sortable(false)
                     ->copyable()
                     ->numeric(),
@@ -103,6 +103,6 @@ class ReportProject extends BaseListRecords implements HasForms
     public function getTotalSalariesSum(): string
     {
         $projects = $this->table->getQuery()->get();
-        return Number::format($projects->sum('total_salaries'), locale: config('app.locale'));
+        return Number::format($projects->sum('total_salaries'), locale: config('app.locale')).' تومان ';
     }
 }

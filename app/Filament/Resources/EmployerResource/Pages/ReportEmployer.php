@@ -87,7 +87,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
                     ->numeric()
                     ->copyable()
                     ->sortable(false)
-                    ->prefix(trans('toman'))
+                    ->suffix(' '.trans('toman'))
                     ->summarize([
                         Summarizers\Summarizer::make()
                             ->label(trans('Sum'))
@@ -119,19 +119,12 @@ class ReportEmployer extends BaseListRecords implements HasForms
     public function getTotalSalariesSum(): string
     {
         $projects = $this->table->getQuery()->get();
-        return Number::format($projects->sum('total_salaries'), locale: config('app.locale'));
+        return Number::format($projects->sum('total_salaries'), locale: config('app.locale')).' تومان ';
     }
 
     public function getTotalWorkDurationSum(): string
     {
-        $projects = $this->table->getQuery()->get();
-
-        $totalDuration = Carbon::createFromTime();
-        foreach ($projects as $project) {
-            if (!empty($project->total_work_duration)) {
-                $totalDuration->addSeconds((int) $project->total_work_duration);
-            }
-        }
-        return $totalDuration->diff('00:00:00')->forHumans();
+        $seconds = $this->table->getQuery()->get()->sum('total_work_duration');
+        return Carbon::createFromTime()->addSeconds($seconds)->diff('00:00:00')->forHumans();
     }
 }
