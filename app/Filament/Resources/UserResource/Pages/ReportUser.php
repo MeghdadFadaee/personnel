@@ -163,7 +163,7 @@ class ReportUser extends BaseListRecords implements HasForms
             )
             ->summarize([
                 Summarizers\Summarizer::make()
-                    ->label(trans('Sum'))
+                    ->label(trans(''))
                     ->formatStateUsing(fn($state) => Carbon::createFromTime()
                         ->addSeconds(
                             $this->table
@@ -187,7 +187,7 @@ class ReportUser extends BaseListRecords implements HasForms
             ->copyable()
             ->summarize([
                 Summarizers\Summarizer::make()
-                    ->label(trans('Sum'))
+                    ->label(trans(''))
                     ->formatStateUsing(fn($state) => Number::format(
                             $this->table
                                 ->getQuery()
