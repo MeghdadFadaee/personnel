@@ -48,7 +48,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
                     ->readOnly(),
 
                 TextInput::make('total_salaries')
-                    ->prefix(trans('toman'))
+                    ->suffix(trans('toman'))
                     ->default(0)
                     ->readOnly(),
             ]);

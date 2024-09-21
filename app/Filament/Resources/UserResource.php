@@ -54,13 +54,13 @@ class UserResource extends BaseResource
                                     ->time(),
 
                                 TextInput::make('hourly_salary')
-                                    ->prefix(trans('toman'))
+                                    ->suffix(trans('toman'))
                                     ->integer()
                                     ->nullable()
                                     ->default(0),
 
                                 TextInput::make('hourly_penalty')
-                                    ->prefix(trans('toman'))
+                                    ->suffix(trans('toman'))
                                     ->integer()
                                     ->nullable()
                                     ->default(0),
@@ -93,9 +93,9 @@ class UserResource extends BaseResource
                 TextColumn::make('exited_at'),
                 TextColumn::make('daily_duty'),
                 TextColumn::make('hourly_salary')
-                    ->prefix(trans('toman')),
+                    ->suffix(' '.trans('toman')),
                 TextColumn::make('hourly_penalty')
-                    ->prefix(trans('toman')),
+                    ->suffix(' '.trans('toman')),
                 TextColumn::make('employers.title')->badge(),
                 TextColumn::make('projects.title')->badge(),
             ])

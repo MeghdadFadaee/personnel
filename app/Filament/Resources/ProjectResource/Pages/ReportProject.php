@@ -51,13 +51,13 @@ class ReportProject extends BaseListRecords implements HasForms
                     ->default(0),
 
                 TextInput::make('fee')
-                    ->prefix(trans('toman'))
+                    ->suffix(trans('toman'))
                     ->integer()
                     ->nullable()
                     ->default(0),
 
                 TextInput::make('total_salaries')
-                    ->prefix(trans('toman'))
+                    ->suffix(trans('toman'))
                     ->readOnly()
                     ->default(0),
             ]);

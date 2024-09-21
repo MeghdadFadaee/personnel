@@ -32,7 +32,7 @@ class ProjectResource extends BaseResource
                     ->default(0),
 
                 TextInput::make('fee')
-                    ->prefix(trans('toman'))
+                    ->suffix(trans('toman'))
                     ->integer()
                     ->nullable()
                     ->default(0),
