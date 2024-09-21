@@ -117,17 +117,20 @@ class UserResource extends BaseResource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
             'report' => Pages\ReportUser::route('/report'),
+            'report.detail' => Pages\ReportDetailUser::route('/report/{record}'),
         ];
     }
 
     public static function getNavigationItems(): array
     {
         $selfItem = Arr::first(parent::getNavigationItems());
+        $reportItem = Arr::first(Pages\ReportUser::getNavigationItems());
 
         return [
             $selfItem
                 ->isActiveWhen(fn() => self::activeWhen()),
-            ...Pages\ReportUser::getNavigationItems(),
+            $reportItem
+                ->isActiveWhen(fn() => request()->routeIs(static::getRouteBaseName().'.*')),
         ];
     }
 
@@ -135,6 +138,6 @@ class UserResource extends BaseResource
     {
         $requestRoute = Str::of(request()->route()->getName());
         $reportRoute = Pages\ReportUser::getRouteName();
-        return $requestRoute->contains(self::getRouteBaseName()) and !$requestRoute->is($reportRoute) ;
+        return $requestRoute->contains(self::getRouteBaseName()) and !$requestRoute->is($reportRoute.'*');
     }
 }
