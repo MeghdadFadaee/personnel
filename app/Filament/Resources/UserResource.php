@@ -133,7 +133,7 @@ class UserResource extends BaseResource
             $selfItem
                 ->isActiveWhen(fn() => self::activeWhen()),
             $reportItem
-                ->isActiveWhen(fn() => request()->routeIs(static::getRouteBaseName().'.*')),
+                ->isActiveWhen(fn() => request()->routeIs(static::getRouteBaseName().'.report.*')),
         ];
     }
 
