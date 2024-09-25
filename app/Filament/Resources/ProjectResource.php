@@ -23,6 +23,11 @@ class ProjectResource extends BaseResource
     {
         return $form
             ->schema([
+
+                Select::make('employer_id')
+                    ->relationship('employer', 'title')
+                    ->required(),
+              
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),
