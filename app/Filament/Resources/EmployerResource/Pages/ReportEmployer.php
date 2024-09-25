@@ -65,12 +65,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
 
                 TextColumn::make('total_work_duration')
                     ->copyable()
-                    ->formatStateUsing(fn($state) => sprintf(
-                        '%02d:%02d:%02d',
-                        floor($state / 3600),
-                        floor($state % 3600 / 60),
-                        $state % 60
-                    ))
+                    ->formatStateUsing(fn($state) => floor($state / 3600).gmdate(":i:s", $state % 3600))
                     ->tooltip(
                         fn($state) => Carbon::createFromTime()
                             ->addSeconds((int) $state)

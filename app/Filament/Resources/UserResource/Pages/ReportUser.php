@@ -110,7 +110,7 @@ class ReportUser extends BaseListRecords implements HasForms
         $this->withAttendancesSum(
             $query,
             'total_reduce_daily_duty_duration',
-            'TIME_TO_SEC(users.daily_duty) - (TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at) + TIME_TO_SEC(home_work)) - TIME_TO_SEC(reduce) + TIME_TO_SEC(vacation)',
+            '(TIME_TO_SEC(users.daily_duty) - (TIME_TO_SEC(exited_at) - TIME_TO_SEC(entered_at) + TIME_TO_SEC(home_work)) - TIME_TO_SEC(reduce) + TIME_TO_SEC(vacation)) * -1',
         );
 
         $this->withAttendancesSum(
@@ -150,12 +150,10 @@ class ReportUser extends BaseListRecords implements HasForms
             ->label(empty($label) ? $name : $label)
             ->color($color)
             ->copyable()
-            ->formatStateUsing(fn($state) => sprintf(
-                '%02d:%02d:%02d',
-                floor($state / 3600),
-                floor($state % 3600 / 60),
-                $state % 60
-            ))
+            ->formatStateUsing(fn($state) => match (true) {
+                $state > 0 => floor($state / 3600).gmdate(":i:s", $state % 3600),
+                default => null
+            })
             ->tooltip(fn($state) => Carbon::createFromTime()
                 ->addSeconds((int) $state)
                 ->diff('00:00:00')
