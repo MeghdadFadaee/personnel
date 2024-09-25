@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->integer('employer_id')
+                ->after('id')
                 ->nullable()
                 ->unsigned();
         });
