@@ -36,15 +36,20 @@ class AttendanceResource extends BaseResource
                     ->jalali(),
 
                 TextInput::make('entered_at')
+                    ->default('00:00')
                     ->time(),
                 TextInput::make('exited_at')
                     ->after('entered_at')
+                    ->default('00:00')
                     ->time(),
                 TextInput::make('reduce')
+                    ->default('00:00')
                     ->time(),
                 TextInput::make('vacation')
+                    ->default('00:00')
                     ->time(),
                 TextInput::make('home_work')
+                    ->default('00:00')
                     ->time(),
 
             ]);
