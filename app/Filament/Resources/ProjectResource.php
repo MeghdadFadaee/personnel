@@ -48,6 +48,7 @@ class ProjectResource extends BaseResource
     {
         return $table
             ->columns([
+                TextColumn::make('employer.title'),
                 TextColumn::make('title'),
                 TextColumn::make('amount')
                     ->numeric(),
