@@ -71,7 +71,7 @@ class ReportUser extends BaseListRecords implements HasForms
             ])
             ->actions([])
             ->toggleableAll()
-            ->recordUrl(fn($record) => route('filament.admin.resources.users.report.detail', $record), true)
+            ->recordUrl(fn($record) => route(self::getRouteName().'.detail', $record), true)
             ->modifyQueryUsing(fn(Builder $query) => $this->modifyTableQuery($query));
     }
 
@@ -150,11 +150,12 @@ class ReportUser extends BaseListRecords implements HasForms
             ->label(empty($label) ? $name : $label)
             ->color($color)
             ->copyable()
-            ->formatStateUsing(fn($state) => match (true) {
-                $state > 0 => Carbon::createFromTime()->addSeconds((int) $state)->format('H:i:s'),
-                $state < 0 => Carbon::createFromTime()->subSeconds((int) $state)->format('H:i:s'),
-                default => null,
-            })
+            ->formatStateUsing(fn($state) => sprintf(
+                '%02d:%02d:%02d',
+                floor($state / 3600),
+                floor($state % 3600 / 60),
+                $state % 60
+            ))
             ->tooltip(fn($state) => Carbon::createFromTime()
                 ->addSeconds((int) $state)
                 ->diff('00:00:00')

@@ -131,16 +131,23 @@ class UserResource extends BaseResource
 
         return [
             $selfItem
-                ->isActiveWhen(fn() => self::activeWhen()),
+                ->isActiveWhen(fn() => self::selfActiveWhen()),
             $reportItem
-                ->isActiveWhen(fn() => request()->routeIs(static::getRouteBaseName().'.report.*')),
+                ->isActiveWhen(fn() => self::reportActiveWhen()),
         ];
     }
 
-    public static function activeWhen(): bool
+    public static function selfActiveWhen(): bool
     {
         $requestRoute = Str::of(request()->route()->getName());
         $reportRoute = Pages\ReportUser::getRouteName();
         return $requestRoute->contains(self::getRouteBaseName()) and !$requestRoute->is($reportRoute.'*');
+    }
+
+    public static function reportActiveWhen(): bool
+    {
+        $requestRoute = Str::of(request()->route()->getName());
+        $reportRoute = Pages\ReportUser::getRouteName();
+        return $requestRoute->contains($reportRoute);
     }
 }
