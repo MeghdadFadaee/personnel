@@ -77,7 +77,6 @@ class ReportUser extends BaseListRecords implements HasForms
 
     public function modifyTableQuery(Builder $query): Builder
     {
-        $query->whereKey(1);
         $this->withAttendancesSum(
             $query,
             'total_attendance_duration',
