@@ -46,11 +46,14 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-clock')
                             ->schema([
                                 TextInput::make('entered_at')
+                                    ->default('00:00')
                                     ->time(),
                                 TextInput::make('exited_at')
+                                    ->default('00:00')
                                     ->after('entered_at')
                                     ->time(),
                                 TextInput::make('daily_duty')
+                                    ->default('00:00')
                                     ->time(),
 
                                 TextInput::make('hourly_salary')
