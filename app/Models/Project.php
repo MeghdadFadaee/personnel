@@ -35,15 +35,10 @@ class Project extends Model
     {
         return $this->belongsTo(Employer::class);
     }
-    
+
     public function performances(): HasMany
     {
         return $this->hasMany(Performance::class);
-    }
-
-    public function getTotalSalariesAttribute(): float|int
-    {
-        return ((int) $this->fee) * ((int) $this->performances_sum_completed_count);
     }
 
     public function getAmountDoneAttribute(): int

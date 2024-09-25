@@ -14,7 +14,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Number;
+use Illuminate\Support\Facades\DB;
 
 class ReportProject extends BaseListRecords implements HasForms
 {
@@ -66,7 +66,7 @@ class ReportProject extends BaseListRecords implements HasForms
     public function table(Table $table): Table
     {
         $table = parent::table(table: $table);
-        $columns = Arr::except($table->getColumns(), ['users.full_name']);
+        $columns = Arr::except($table->getColumns(), ['users.full_name', 'employer.title']);
 
         return $table
             ->columns([
@@ -74,12 +74,10 @@ class ReportProject extends BaseListRecords implements HasForms
 
                 TextColumn::make('total_salaries')
                     ->summarize([
-                        Summarizers\Summarizer::make()
-                            ->label(trans('Sum'))
-                            ->formatStateUsing(fn($state) => $this->getTotalSalariesSum())
+                        Summarizers\Sum::make()
+                            ->suffix(' '.trans('toman'))
                     ])
                     ->suffix(' '.trans('toman'))
-                    ->sortable(false)
                     ->copyable()
                     ->numeric(),
 
@@ -97,12 +95,13 @@ class ReportProject extends BaseListRecords implements HasForms
             'performances' => fn($builder) => $this->dayFilter($builder)
         ], 'completed_count');
 
-        return $query;
-    }
+        $query->withSum([
+            'performances AS total_salaries' => function (Builder $builder) {
+                $builder->select(DB::raw('SUM(completed_count * fee)'));
+                $this->dayFilter($builder);
+            }
+        ], 'total_salaries');
 
-    public function getTotalSalariesSum(): string
-    {
-        $projects = $this->table->getQuery()->get();
-        return Number::format($projects->sum('total_salaries'), locale: config('app.locale')).' تومان ';
+        return $query;
     }
 }

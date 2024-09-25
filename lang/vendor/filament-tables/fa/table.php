@@ -47,11 +47,11 @@ return [
 
     'summary' => [
 
-        'heading' => '',
+        'heading' => 'خلاصه',
 
         'subheadings' => [
             'all' => 'تمام :label',
-            'group' => ':group خلاصه',
+            'group' => 'خلاصه :group',
             'page' => 'این صفحه',
         ],
 

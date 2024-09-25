@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -28,7 +29,7 @@ class ProjectResource extends BaseResource
                 Select::make('employer_id')
                     ->relationship('employer', 'title')
                     ->required(),
-              
+
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),
@@ -48,6 +49,13 @@ class ProjectResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('employer.title')
+                    ->label(trans('employer'))
+                    ->collapsible(),
+            ])
+            ->groupingSettingsInDropdownOnDesktop()
+            ->defaultGroup('employer.title')
             ->columns([
                 TextColumn::make('employer.title'),
                 TextColumn::make('title'),
@@ -96,6 +104,6 @@ class ProjectResource extends BaseResource
     {
         $requestRoute = Str::of(request()->route()->getName());
         $reportRoute = Pages\ReportProject::getRouteName();
-        return $requestRoute->contains(self::getRouteBaseName()) and !$requestRoute->is($reportRoute) ;
+        return $requestRoute->contains(self::getRouteBaseName()) and !$requestRoute->is($reportRoute);
     }
 }
