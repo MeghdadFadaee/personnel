@@ -4,11 +4,14 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\UserResource;
+use App\Models\User;
 use App\Traits\PageWithDayFilter;
 use App\Traits\TranslatedPage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
 use Filament\Tables\Actions\Action;
@@ -18,16 +21,25 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
-class ReportDetailUser extends Page implements HasForms
+class ReportDetailUser extends Page implements HasForms, HasTable
 {
     use PageWithDayFilter;
     use TranslatedPage;
+    use InteractsWithTable;
 
     protected static string $resource = UserResource::class;
-    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
-    protected static string $view = 'filament.resources.reports.has-filter-form';
+    protected static string $view = 'filament.resources.reports.user-detail';
 
-    public string $table = '';
+    public function table(Table $table): Table
+    {
+        return $table
+            ->query(User::query());
+    }
+
+    public function reportUser()
+    {
+        return Table::make($this);
+    }
 
     protected function getForms(): array
     {
