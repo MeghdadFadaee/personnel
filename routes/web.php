@@ -10,6 +10,7 @@ Route::get('/re', function () {
     dd([
         'headers' => request()->header(),
         'body' => request()->all(),
+        'full_url' => request()->fullUrl(),
         'ip' => request()->ip(),
         'method' => request()->method(),
         'url' => request()->url(),
