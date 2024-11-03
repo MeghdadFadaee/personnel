@@ -30,7 +30,7 @@ class PersonnelPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('personnel')
-            ->path('personnel')
+            ->path('/')
             ->favicon('/favicon.png')
             ->brandLogo('/logo.png')
             ->brandLogoHeight(1)
