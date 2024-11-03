@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->time('reduce')->default(0);
             $table->time('vacation')->default(0);
             $table->time('home_work')->default(0);
-            $table->date('day')->default(DB::raw('CURRENT_DATE'));
+            $table->date('day')->default(DB::raw('(CURRENT_DATE())'));
             $table->timestamps();
             $table->softDeletes();
 
