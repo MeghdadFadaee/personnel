@@ -48,12 +48,10 @@ class Project extends Model
 
     public function scopeHasRemaining(Builder $query): void
     {
-        $query->where(function (Builder $query) {
-            $query->doesntHave('performances');
-            $query->orWhereHas('performances', function (Builder $subQuery) {
-                $subQuery->selectRaw('SUM(completed_count) as total_completed');
-                $subQuery->havingRaw('total_completed < projects.amount');
-            });
-        });
+        $query->whereRaw('projects.amount > (
+            SELECT COALESCE(SUM(completed_count), 0)
+            FROM performances
+            WHERE performances.project_id = projects.id
+        )');
     }
 }
