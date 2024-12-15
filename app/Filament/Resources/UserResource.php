@@ -100,7 +100,6 @@ class UserResource extends BaseResource
                 TextColumn::make('hourly_penalty')
                     ->suffix(' '.trans('toman')),
                 TextColumn::make('employers.title')->badge(),
-                TextColumn::make('projects.title')->badge(),
             ])
             ->toggleableAll()
             ->recordUrl(null);

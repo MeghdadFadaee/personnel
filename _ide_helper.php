@@ -8,6 +8,13 @@ namespace Illuminate\Database\Query {
     class Builder {}
 }
 
+namespace Illuminate\Contracts\Auth {
+    /**
+     * @method static \App\Models\User user()
+     */
+    interface Guard {}
+}
+
 namespace Filament\Tables {
     /**
      * @see \App\Providers\AppServiceProvider::boot()

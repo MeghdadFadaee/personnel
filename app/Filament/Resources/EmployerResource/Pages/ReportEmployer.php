@@ -4,7 +4,7 @@ namespace App\Filament\Resources\EmployerResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\EmployerResource;
-use App\Traits\PageWithDayFilter;
+use App\Traits\HasDayFilter;
 use Carbon\Carbon;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -21,7 +21,7 @@ use Illuminate\Support\Number;
 class ReportEmployer extends BaseListRecords implements HasForms
 {
     use InteractsWithForms;
-    use PageWithDayFilter;
+    use HasDayFilter;
 
     protected static string $resource = EmployerResource::class;
     protected static ?string $navigationIcon = 'heroicon-o-chart-pie';
@@ -65,7 +65,7 @@ class ReportEmployer extends BaseListRecords implements HasForms
 
                 TextColumn::make('total_work_duration')
                     ->copyable()
-                    ->formatStateUsing(fn($state) => floor($state / 3600).gmdate(":i:s", $state % 3600))
+                    ->formatStateUsing(fn($state) => secondsToTime($state))
                     ->tooltip(
                         fn($state) => Carbon::createFromTime()
                             ->addSeconds((int) $state)
@@ -99,13 +99,13 @@ class ReportEmployer extends BaseListRecords implements HasForms
     {
         $query->with('users');
         $query->with([
-            'productivities' => fn($builder) => $this->dayFilter($builder),
+            'productivities' => fn($builder) => $this->applyDayFilter($builder),
         ]);
 
         $query->withSum([
             "productivities AS total_work_duration" => function (Builder $builder) {
                 $builder->select(DB::raw('SUM(TIME_TO_SEC(finished_at) - TIME_TO_SEC(started_at) - TIME_TO_SEC(leave_time))'));
-                $this->dayFilter($builder);
+                $this->applyDayFilter($builder);
             },
         ], 'total_work_duration');
 

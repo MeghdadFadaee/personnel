@@ -4,7 +4,7 @@ namespace App\Filament\Resources\ProjectResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\ProjectResource;
-use App\Traits\PageWithDayFilter;
+use App\Traits\HasDayFilter;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 class ReportProject extends BaseListRecords implements HasForms
 {
     use InteractsWithForms;
-    use PageWithDayFilter;
+    use HasDayFilter;
 
     protected static string $resource = ProjectResource::class;
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
@@ -92,13 +92,13 @@ class ReportProject extends BaseListRecords implements HasForms
     public function modifyTableQuery(Builder $query): Builder
     {
         $query->withSum([
-            'performances' => fn($builder) => $this->dayFilter($builder)
+            'performances' => fn($builder) => $this->applyDayFilter($builder)
         ], 'completed_count');
 
         $query->withSum([
             'performances AS total_salaries' => function (Builder $builder) {
                 $builder->select(DB::raw('SUM(completed_count * fee)'));
-                $this->dayFilter($builder);
+                $this->applyDayFilter($builder);
             }
         ], 'total_salaries');
 

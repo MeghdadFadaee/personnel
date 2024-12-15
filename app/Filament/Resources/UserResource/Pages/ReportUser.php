@@ -4,7 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\UserResource;
-use App\Traits\PageWithDayFilter;
+use App\Traits\HasDayFilter;
 use Carbon\Carbon;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -20,7 +20,7 @@ use Illuminate\Support\Number;
 class ReportUser extends BaseListRecords implements HasForms
 {
     use InteractsWithForms;
-    use PageWithDayFilter;
+    use HasDayFilter;
 
     protected static string $resource = UserResource::class;
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
@@ -139,7 +139,7 @@ class ReportUser extends BaseListRecords implements HasForms
         $query->withSum([
             "attendances AS $AS" => function (Builder $builder) use ($row) {
                 $builder->select(DB::raw("SUM($row)"));
-                $this->dayFilter($builder);
+                $this->applyDayFilter($builder);
             },
         ], $AS);
     }
@@ -151,7 +151,7 @@ class ReportUser extends BaseListRecords implements HasForms
             ->color($color)
             ->copyable()
             ->formatStateUsing(fn($state) => match (true) {
-                $state > 0 => floor($state / 3600).gmdate(":i:s", $state % 3600),
+                $state > 0 => secondsToTime($state),
                 default => null
             })
             ->tooltip(fn($state) => Carbon::createFromTime()

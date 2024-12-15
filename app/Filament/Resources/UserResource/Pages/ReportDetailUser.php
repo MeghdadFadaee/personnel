@@ -2,25 +2,19 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Filament\Pages\BaseListRecords;
 use App\Filament\Resources\UserResource;
-use App\Traits\PageWithDayFilter;
+use App\Filament\Resources\UserResource\Widgets;
+use App\Traits\HasDayFilter;
 use App\Traits\TranslatedPage;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\ActionsPosition;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+
 
 class ReportDetailUser extends Page implements HasForms
 {
-    use PageWithDayFilter;
+    use InteractsWithRecord;
+    use HasDayFilter;
     use TranslatedPage;
 
     protected static string $resource = UserResource::class;
@@ -29,11 +23,30 @@ class ReportDetailUser extends Page implements HasForms
 
     public string $table = '';
 
+    public function mount(int|string $record): void
+    {
+        $this->record = $this->resolveRecord($record);
+    }
+
     protected function getForms(): array
     {
         return [
             'filterForm',
         ];
+    }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+            Widgets\UserProductivities::make(),
+            Widgets\UserPerformances::make(),
+        ];
+    }
+
+    public function loadTable(): void
+    {
+        $this->dispatch('setUserProductivitiesFilters', $this->getResolvedParams());
+        $this->dispatch('setUserPerformancesFilters', $this->getResolvedParams());
     }
 
     public static function canAccess(array $parameters = []): bool
